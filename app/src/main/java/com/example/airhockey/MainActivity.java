@@ -1,6 +1,8 @@
 package com.example.airhockey;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.content.Intent;
 import android.os.Bundle;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.CompositePageTransformer;
@@ -10,11 +12,15 @@ import java.util.ArrayList;
 
 import android.os.Bundle;
 import android.view.MotionEvent;
+import android.view.View;
+import android.widget.Button;
 
 public class MainActivity extends AppCompatActivity {
     private ViewPager2 viewPager2;
     private ArrayList<Integer> imageList;
     private ImageAdapter adapter;
+
+    private Button buttonSinglePlayer;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,6 +32,15 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onPageSelected(int position) {
                 super.onPageSelected(position);
+            }
+        });
+
+        buttonSinglePlayer = findViewById(R.id.buttonSinglePlayer);
+
+        buttonSinglePlayer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this, Pitch.class));
             }
         });
     }
