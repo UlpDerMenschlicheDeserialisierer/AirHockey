@@ -35,8 +35,8 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        //Single Player Button
         buttonSinglePlayer = findViewById(R.id.buttonSinglePlayer);
-
         buttonSinglePlayer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -59,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
         viewPager2 = findViewById(R.id.viewPager2);
         imageList = new ArrayList<>();
 
-        imageList.add(R.drawable.skin1);
+        imageList.add(R.drawable.skinblue);
         imageList.add(R.drawable.skin2);
         imageList.add(R.drawable.skin3);
         imageList.add(R.drawable.skin4);

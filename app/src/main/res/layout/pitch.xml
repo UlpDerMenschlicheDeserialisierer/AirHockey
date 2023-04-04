@@ -7,4 +7,11 @@
     android:background="@drawable/field"
     tools:context=".Pitch">
 
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="125dp"
+        android:layout_height="125dp"
+        app:srcCompat="@drawable/skinblue"
+        tools:layout_editor_absoluteX="143dp"
+        tools:layout_editor_absoluteY="461dp" />
 </androidx.constraintlayout.widget.ConstraintLayout>
