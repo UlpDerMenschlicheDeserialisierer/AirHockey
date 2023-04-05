@@ -37,13 +37,13 @@ public class Pitch extends AppCompatActivity {
                         // Überprüfe, ob die ImageView das Layout überschreitet
                         if (newX < 0) {
                             newX = 0;
-                        } else if (newX > layout.getWidth() - view.getWidth()) {
-                            newX = layout.getWidth() - view.getWidth();
+                        } else if (newX > layout.getBackground().getBounds().width() - view.getWidth()) {
+                            newX = layout.getBackground().getBounds().width() - view.getWidth();
                         }
-                        if (newY < 0) {
-                            newY = 0;
-                        } else if (newY > this.layout.getHeight() - view.getHeight()) {
-                            newY = layout.getHeight() - view.getHeight();
+                        if (newY < layout.getBackground().getBounds().height()/2 - (player1.getHeight()/4)) { // nur untere Hälfte des Hintergrunds erlaubt
+                            newY = layout.getBackground().getBounds().height()/2 - (player1.getHeight()/4);
+                        } else if (newY > this.layout.getBackground().getBounds().height() - view.getHeight()) {
+                            newY = layout.getBackground().getBounds().height() - view.getHeight();
                         }
 
                         view.animate().x(newX).y(newY).setDuration(0).start();
