@@ -12,6 +12,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 
 public class Pitch extends AppCompatActivity {
     private ImageView player1;
+    private ImageView puck;
     private float xCoOrdinate, yCoOrdinate;
 
     @Override
@@ -20,6 +21,7 @@ public class Pitch extends AppCompatActivity {
         setContentView(R.layout.pitch);
 
         player1 = findViewById(R.id.imageViewPlayer1);
+        puck = findViewById(R.id.imageViewPuck);
 
         player1.setOnTouchListener(new View.OnTouchListener() {
             ConstraintLayout layout = findViewById(R.id.pitchlayout);
