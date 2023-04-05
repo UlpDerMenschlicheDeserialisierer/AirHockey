@@ -40,8 +40,8 @@ public class Pitch extends AppCompatActivity {
                         } else if (newX > layout.getBackground().getBounds().width() - view.getWidth()) {
                             newX = layout.getBackground().getBounds().width() - view.getWidth();
                         }
-                        if (newY < layout.getBackground().getBounds().height()/2 - (player1.getHeight()/4)) { // nur untere Hälfte des Hintergrunds erlaubt
-                            newY = layout.getBackground().getBounds().height()/2 - (player1.getHeight()/4);
+                        if (newY < layout.getBackground().getBounds().height()/2 - (player1.getHeight()/2)) { // nur untere Hälfte des Hintergrunds erlaubt
+                            newY = layout.getBackground().getBounds().height()/2 - (player1.getHeight()/2);
                         } else if (newY > this.layout.getBackground().getBounds().height() - view.getHeight()) {
                             newY = layout.getBackground().getBounds().height() - view.getHeight();
                         }
