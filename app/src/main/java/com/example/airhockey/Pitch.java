@@ -9,6 +9,7 @@ import android.widget.RelativeLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import android.graphics.Rect;
 
 public class Pitch extends AppCompatActivity {
     private ImageView player1;
@@ -49,6 +50,28 @@ public class Pitch extends AppCompatActivity {
                         }
 
                         view.animate().x(newX).y(newY).setDuration(0).start();
+
+                        // Überprüfe, ob sich player1 und puck berühren
+                        Rect rectPlayer1 = new Rect((int)player1.getX(), (int)player1.getY(), (int)(player1.getX() + player1.getWidth()), (int)(player1.getY() + player1.getHeight()));
+                        Rect rectPuck = new Rect((int)puck.getX(), (int)puck.getY(), (int)(puck.getX() + puck.getWidth()), (int)(puck.getY() + puck.getHeight()));
+                        if (rectPlayer1.intersects(rectPuck.left, rectPuck.top, rectPuck.right, rectPuck.bottom)) {
+                            // Bestimme die Berührungsposition auf der Spieler-ImageView
+                            float touchX = event.getRawX() - player1.getX();
+                            float touchY = event.getRawY() - player1.getY();
+
+                            // Bestimme die Breite der Spieler-ImageView
+                            float playerWidth = player1.getWidth();
+
+                            // Bestimme von welcher Seite der Puck getroffen wurde
+                            if (touchX < playerWidth / 2) { // linker Bereich
+                                // Bewege den Puck nach rechts
+                                puck.animate().x(puck.getX() - 10).setDuration(0).start();
+                            } else { // rechter Bereich
+                                // Bewege den Puck nach links
+                                puck.animate().x(puck.getX() + 10).setDuration(0).start();
+                            }
+                        }
+
                         break;
                     default:
                         return false;
