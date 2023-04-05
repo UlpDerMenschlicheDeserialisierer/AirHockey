@@ -51,10 +51,20 @@ public class Pitch extends AppCompatActivity {
 
                         view.animate().x(newX).y(newY).setDuration(0).start();
 
-                        // Überprüfe, ob sich player1 und puck berühren
-                        Rect rectPlayer1 = new Rect((int)player1.getX(), (int)player1.getY(), (int)(player1.getX() + player1.getWidth()), (int)(player1.getY() + player1.getHeight()));
-                        Rect rectPuck = new Rect((int)puck.getX(), (int)puck.getY(), (int)(puck.getX() + puck.getWidth()), (int)(puck.getY() + puck.getHeight()));
-                        if (rectPlayer1.intersects(rectPuck.left, rectPuck.top, rectPuck.right, rectPuck.bottom)) {
+                        // Berechne die Positionen des Puckmittelpunkts und des Playermittelpunkts
+                        float puckCenterX = puck.getX() + puck.getWidth() / 2;
+                        float puckCenterY = puck.getY() + puck.getHeight() / 2;
+                        float playerCenterX = player1.getX() + player1.getWidth() / 2;
+                        float playerCenterY = player1.getY() + player1.getHeight() / 2;
+
+                        // Berechne die Distanz zwischen den Mittelpunkten
+                        float distance = (float) Math.sqrt(Math.pow(puckCenterX - playerCenterX, 2) + Math.pow(puckCenterY - playerCenterY, 2));
+
+                        // Berechne die Summe der Radien
+                        float sumOfRadii = puck.getWidth() / 2 + player1.getWidth() / 2;
+
+                        // Überprüfe, ob der Puck den Player berührt hat
+                        if (distance < sumOfRadii) {
                             // Bestimme die Berührungsposition auf der Spieler-ImageView
                             float touchX = event.getRawX() - player1.getX();
                             float touchY = event.getRawY() - player1.getY();
