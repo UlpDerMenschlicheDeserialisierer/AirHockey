@@ -36,7 +36,7 @@ class Player extends RoundEntity {
                 Bitmap.createScaledBitmap(
                         BitmapFactory.decodeResource(
                                 pitch.getResources(), R.drawable.skinblue),
-                        (int) ((deviceWidth)*128.0/1080.0), (int) ((deviceWidth)*128.0/1080.0), true));
+                        (int) ((deviceWidth)*128.0*2/1080.0), (int) ((deviceWidth)*128.0*2/1080.0), true));
         isWinner = false;
         this.goal = goal;
         delay = 0;
