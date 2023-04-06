@@ -1,93 +1,144 @@
 package com.example.airhockey;
 
-import android.content.pm.ActivityInfo;
-import android.os.Bundle;
-import android.view.MotionEvent;
+import android.content.Context;
+import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.view.View;
-import android.widget.ImageView;
-import android.widget.RelativeLayout;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
-import android.graphics.Rect;
+import androidx.annotation.NonNull;
 
-public class Pitch extends AppCompatActivity {
-    private ImageView player1;
-    private ImageView puck;
-    private float xCoOrdinate, yCoOrdinate;
+import java.util.Timer;
+import java.util.TimerTask;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.pitch);
 
-        player1 = findViewById(R.id.imageViewPlayer1);
-        puck = findViewById(R.id.imageViewPuck);
+/**
+ * The View for the game
+ *
+ * @author David Kaluta
+ * @version 24
+ * @since 1
+ */
+public class Pitch extends View {
 
-        player1.setOnTouchListener(new View.OnTouchListener() {
-            ConstraintLayout layout = findViewById(R.id.pitchlayout);
-            @Override
-            public boolean onTouch(View view, MotionEvent event) {
-                switch (event.getActionMasked()) {
-                    case MotionEvent.ACTION_DOWN:
-                        xCoOrdinate = view.getX() - event.getRawX();
-                        yCoOrdinate = view.getY() - event.getRawY();
-                        break;
-                    case MotionEvent.ACTION_MOVE:
-                        float newX = event.getRawX() + xCoOrdinate;
-                        float newY = event.getRawY() + yCoOrdinate;
+    private static float deviceWidth = Resources.getSystem().getDisplayMetrics().widthPixels;
+    private static float deviceHeight = Resources.getSystem().getDisplayMetrics().heightPixels;
 
-                        // Überprüfe, ob die ImageView das Layout überschreitet
-                        if (newX < 0) {
-                            newX = 0;
-                        } else if (newX > layout.getBackground().getBounds().width() - view.getWidth()) {
-                            newX = layout.getBackground().getBounds().width() - view.getWidth();
-                        }
-                        if (newY < layout.getBackground().getBounds().height()/2 - (player1.getHeight()/2)) { // nur untere Hälfte des Hintergrunds erlaubt
-                            newY = layout.getBackground().getBounds().height()/2 - (player1.getHeight()/2);
-                        } else if (newY > this.layout.getBackground().getBounds().height() - view.getHeight()) {
-                            newY = layout.getBackground().getBounds().height() - view.getHeight();
-                        }
+    /**
+     * A red paddle (PC)
+     */
+    Player player;
 
-                        view.animate().x(newX).y(newY).setDuration(0).start();
+    /**
+     * A blue paddle (NPC)
+     */
+    //BluePaddle bp;
 
-                        // Berechne die Positionen des Puckmittelpunkts und des Playermittelpunkts
-                        float puckCenterX = puck.getX() + puck.getWidth() / 2;
-                        float puckCenterY = puck.getY() + puck.getHeight() / 2;
-                        float playerCenterX = player1.getX() + player1.getWidth() / 2;
-                        float playerCenterY = player1.getY() + player1.getHeight() / 2;
+    /**
+     * A puck
+     */
+    //Puck p;
 
-                        // Berechne die Distanz zwischen den Mittelpunkten
-                        float distance = (float) Math.sqrt(Math.pow(puckCenterX - playerCenterX, 2) + Math.pow(puckCenterY - playerCenterY, 2));
+    /**
+     * The game background
+     */
+    Bitmap bg;
 
-                        // Berechne die Summe der Radien
-                        float sumOfRadii = puck.getWidth() / 2 + player1.getWidth() / 2;
+    /**
+     * A separator line
+     */
+    Bitmap line;
 
-                        // Überprüfe, ob der Puck den Player berührt hat
-                        if (distance < sumOfRadii) {
-                            // Bestimme die Berührungsposition auf der Spieler-ImageView
-                            float touchX = event.getRawX() - player1.getX();
-                            float touchY = event.getRawY() - player1.getY();
+    /**
+     * A Paint to draw text with
+     */
+    Paint paint;
 
-                            // Bestimme die Breite der Spieler-ImageView
-                            float playerWidth = player1.getWidth();
+    /**
+     * A timer for pausing
+     */
+    Timer timer;
 
-                            // Bestimme von welcher Seite der Puck getroffen wurde
-                            if (touchX < playerWidth / 2) { // linker Bereich
-                                // Bewege den Puck nach rechts
-                                puck.animate().x(puck.getX() - 10).setDuration(0).start();
-                            } else { // rechter Bereich
-                                // Bewege den Puck nach links
-                                puck.animate().x(puck.getX() + 10).setDuration(0).start();
-                            }
-                        }
+    /**
+     * The time required to pause
+     */
+    int pauseTime;
 
-                        break;
-                    default:
-                        return false;
-                }
-                return true;
-            }
-        });
+    /**
+     * The game's difficulty
+     */
+    String difficulty;
+
+    /**
+     * Create a HockeyTable with a difficulty
+     *
+     * @param context    required for a View
+     * @param difficulty The difficulty level
+     */
+    public Pitch(Context context, @NonNull String difficulty) {
+        super(context);
+        this.difficulty = difficulty;
+        paint = new Paint();
+        int deviceWidth = Resources.getSystem().getDisplayMetrics().widthPixels;
+        int deviceHeight = Resources.getSystem().getDisplayMetrics().heightPixels;
+        pauseTime = -4;
+        bg = Bitmap.createScaledBitmap(
+                BitmapFactory.decodeResource(
+                        getResources(), R.drawable.field)
+                , deviceWidth, deviceHeight, true);
+        player = new Player(deviceWidth / 2, 7 * deviceHeight / 8,
+                new Goal(deviceWidth / 4, 0, this), this);
+
+        //p = new Puck(deviceWidth / 2, deviceHeight / 2, this);
+    }
+
+    /**
+     * Create a HockeyTable without a difficulty (will be Medium)
+     *
+     * @param context required for a View
+     */
+    public Pitch(Context context) {
+        super(context);
+        paint = new Paint();
+        int deviceWidth = Resources.getSystem().getDisplayMetrics()
+                .widthPixels;
+        int deviceHeight = Resources.getSystem().getDisplayMetrics()
+                .heightPixels;
+        bg = Bitmap.createScaledBitmap(
+                BitmapFactory.decodeResource(
+                        getResources(), R.drawable.field)
+                , deviceWidth, deviceHeight, true);
+        player = new Player(deviceWidth / 2, 7 * deviceHeight / 8,
+                new Goal(deviceWidth / 4, 0, this), this);
+
+    }
+
+    /**
+     * Get the red paddle
+     *
+     * @return the red paddle
+     */
+    public Player getPlayer() {
+        return player;
+    }
+
+
+    /**
+     * Draw everything
+     *
+     * @param c required for onDraw
+     */
+    protected void onDraw(Canvas c) {
+        super.onDraw(c);
+        c.drawBitmap(bg, 0, 0, null);
+        player.draw(c);
+        player.getGoal().draw(c);
+        paint.setTextSize(144);
+        paint.setColor(Color.WHITE);
+
+        invalidate();
     }
 }

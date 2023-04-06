@@ -37,13 +37,14 @@ public class MainActivity extends AppCompatActivity {
 
         //Single Player Button
         buttonSinglePlayer = findViewById(R.id.buttonSinglePlayer);
-        buttonSinglePlayer.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, Pitch.class));
-            }
-        });
     }
+
+    public void goToGame(View view) {
+        Intent intent = new Intent(this, GameActivity.class);
+        intent.putExtra("DIFFICULTY", "EASY");
+        startActivity(intent);
+    }
+
     private void setUpTransformer() {
         CompositePageTransformer transformer = new CompositePageTransformer();
         transformer.addTransformer(new MarginPageTransformer(40));
