@@ -2,6 +2,7 @@ package com.example.airhockey;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import androidx.recyclerview.widget.RecyclerView;
@@ -10,9 +11,11 @@ import androidx.viewpager2.widget.MarginPageTransformer;
 import androidx.viewpager2.widget.ViewPager2;
 import java.util.ArrayList;
 
-import android.os.Bundle;
+import android.os.Handler;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 
 public class MainActivity extends AppCompatActivity {
@@ -20,7 +23,10 @@ public class MainActivity extends AppCompatActivity {
     private ArrayList<Integer> imageList;
     private ImageAdapter adapter;
 
-    private Button buttonSinglePlayer;
+    private Button buttonSinglePlayer, buttonMultiPlayer;
+    private Animation scaleUp, scaleDown;
+
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,9 +43,41 @@ public class MainActivity extends AppCompatActivity {
 
         //Single Player Button
         buttonSinglePlayer = findViewById(R.id.buttonSinglePlayer);
+        //Multi Player Button
+        buttonMultiPlayer = findViewById(R.id.buttonMultiPlayer);
+
+        // ScaleUp + ScaleDown Animations
+        scaleUp = AnimationUtils.loadAnimation(this, R.anim.scale_up);
+        scaleDown = AnimationUtils.loadAnimation(this, R.anim.scale_down);
+
+        buttonSinglePlayer.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                if (motionEvent.getAction()== MotionEvent.ACTION_DOWN) {
+                    buttonSinglePlayer.startAnimation(scaleUp);
+                    // Wait 60ms before opening calling the Function
+                    new Handler().postDelayed(() -> goToGame(view), 60);
+                } else if (motionEvent.getAction()== MotionEvent.ACTION_UP) {
+                    buttonSinglePlayer.startAnimation(scaleDown);
+                }
+                return true;
+            }
+        });
+
+        buttonMultiPlayer.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                if (motionEvent.getAction()== MotionEvent.ACTION_DOWN) {
+                    buttonMultiPlayer.startAnimation(scaleUp);
+                } else if (motionEvent.getAction()== MotionEvent.ACTION_UP) {
+                    buttonMultiPlayer.startAnimation(scaleDown);
+                }
+                return true;
+            }
+        });
     }
 
-    public void goToGame(View view) {
+    private void goToGame(View view) {
         Intent intent = new Intent(this, GameActivity.class);
         intent.putExtra("DIFFICULTY", "EASY");
         startActivity(intent);

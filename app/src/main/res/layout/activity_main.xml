@@ -50,7 +50,6 @@
         android:fontFamily="@font/montserrat"
         android:foreground="@drawable/button_glow"
         android:lineSpacingExtra="4sp"
-        android:onClick="goToGame"
         android:text="@string/button_SingleplayerText"
         android:textAllCaps="true"
         android:textSize="20sp"
