@@ -3,6 +3,7 @@ package com.example.airhockey;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.view.MotionEvent;
 
 public class Puck extends RoundEntity{
 
@@ -22,4 +23,5 @@ public class Puck extends RoundEntity{
                                 R.drawable.pukgelb),
                         (int) ((deviceWidth)*64.0*2/1080.0), (int) ((deviceWidth)*64.0*2/1080.0), true));
     }
+
 }

@@ -3,6 +3,7 @@ package com.example.airhockey;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.view.MotionEvent;
 
 /**
  * A player-controlled paddle
@@ -66,4 +67,5 @@ class Player extends RoundEntity {
     void win() {
         isWinner = true;
     }
+
 }

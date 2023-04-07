@@ -106,20 +106,27 @@ public class GameActivity extends AppCompatActivity {
      * @param event a MotionEvent with a touch action
      * @return true if the screen has been touched
      */
+
     @Override
     public boolean onTouchEvent(MotionEvent event) {
 
 
         int action = event.getActionMasked();
+        float playerRadius = pitch.getPlayer().radius;
 
         switch (action) {
             case MotionEvent.ACTION_DOWN:
                 xDown1 = event.getX();
                 yDown1 = event.getY();
-                if (xDown1 > pitch.getPlayer().x - 64 && xDown1 < pitch.getPlayer().x + pitch.getPlayer().radius + 64) {
-                    if (yDown1 > pitch.getPlayer().y - 64 && yDown1 < pitch.getPlayer().y + pitch.getPlayer().radius + 64) {
+                System.out.println(xDown1);
+                System.out.println(yDown1);
+
+
+
+                if(xDown1 > playerRadius && xDown1< pitch.getWidth() - playerRadius){
+                    if(yDown1 > pitch.getHeight()/2-playerRadius/2 && yDown1< pitch.getHeight()-playerRadius*2){
                         pitch.getPlayer().setX(xDown1);
-                        pitch.getPlayer().setY(Math.max(yDown1, deviceHeight / 2 + pitch.getPlayer().radius));
+                        pitch.getPlayer().setY(yDown1);
                     }
                 }
                 return true;
@@ -132,26 +139,37 @@ public class GameActivity extends AppCompatActivity {
                         pitch.getPlayer().setY(Math.max(yDown2, deviceHeight / 2 + pitch.getPlayer().radius));
                     }
                 }
+
                 return true;
             case MotionEvent.ACTION_MOVE:
-                float xMove = event.getX();
-                float yMove = event.getY();
-                float playerRadiusWithBuffer = pitch.getPlayer().radius + 64;
-                float minY = deviceHeight / 2 + playerRadiusWithBuffer;
-                float maxY = pitch.getHeight() - playerRadiusWithBuffer;
-                float minX = playerRadiusWithBuffer;
-                float maxX = pitch.getWidth() - playerRadiusWithBuffer;
+                xDown1 = event.getX();
+                yDown1 = event.getY();
+                float newX = xDown1;
+                float newY = yDown1;
 
-                if (xMove > minX && xMove < maxX) {
-                    if (yMove > minY && yMove < maxY) {
-                        pitch.getPlayer().setX(Math.min(Math.max(xMove, minX), maxX));
-                        pitch.getPlayer().setY(Math.min(Math.max(yMove, minY), maxY));
-                    }
+                 playerRadius = pitch.getPlayer().radius;
+
+                if(xDown1 < playerRadius){
+                    newX = playerRadius;
+                }else if(xDown1 > pitch.getWidth() - playerRadius) {
+                    newX = pitch.getWidth() - playerRadius;
                 }
 
+                if(yDown1 < pitch.getHeight()/2-playerRadius/2) {
+                    newY = pitch.getHeight()/2-playerRadius/2;
+                }else if(yDown1 > pitch.getHeight()-playerRadius*2){
+                    newY = pitch.getHeight()-playerRadius*2;
+                }
+
+                pitch.getPlayer().setX(newX);
+                pitch.getPlayer().setY(newY);
                 return true;
             default:
                 return super.onTouchEvent(event);
         }
+
+
     }
+
+
 }
