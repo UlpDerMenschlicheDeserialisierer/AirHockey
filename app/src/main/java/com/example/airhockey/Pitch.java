@@ -40,7 +40,7 @@ public class Pitch extends View {
     /**
      * A puck
      */
-    //Puck p;
+    Puck p;
 
     /**
      * The game background
@@ -92,7 +92,7 @@ public class Pitch extends View {
         player = new Player(deviceWidth / 2, 7 * deviceHeight / 8,
                 new Goal(deviceWidth / 4, 0, this), this);
 
-        //p = new Puck(deviceWidth / 2, deviceHeight / 2, this);
+        p = new Puck(deviceWidth / 2, deviceHeight / 2, this);
     }
 
     /**
@@ -114,6 +114,7 @@ public class Pitch extends View {
         player = new Player(deviceWidth / 2, 7 * deviceHeight / 8,
                 new Goal(deviceWidth / 4, 0, this), this);
 
+        p = new Puck(deviceWidth / 2, deviceHeight / 2, this);
     }
 
     /**
@@ -136,6 +137,7 @@ public class Pitch extends View {
         c.drawBitmap(bg, 0, 0, null);
         player.draw(c);
         player.getGoal().draw(c);
+        p.draw(c);
         paint.setTextSize(144);
         paint.setColor(Color.WHITE);
 
