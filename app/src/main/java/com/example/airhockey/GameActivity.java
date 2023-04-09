@@ -130,17 +130,6 @@ public class GameActivity extends AppCompatActivity {
                     }
                 }
                 return true;
-            case MotionEvent.ACTION_POINTER_DOWN:
-                xDown2 = event.getX(1);
-                yDown2 = event.getY(1);
-                if (xDown2 > pitch.getPlayer().x - 64 && xDown2 < pitch.getPlayer().x + pitch.getPlayer().radius + 64) {
-                    if (yDown2 > pitch.getPlayer().y - 64 && yDown2 < pitch.getPlayer().y + pitch.getPlayer().radius + 64) {
-                        pitch.getPlayer().setX(xDown2);
-                        pitch.getPlayer().setY(Math.max(yDown2, deviceHeight / 2 + pitch.getPlayer().radius));
-                    }
-                }
-
-                return true;
             case MotionEvent.ACTION_MOVE:
                 xDown1 = event.getX();
                 yDown1 = event.getY();
