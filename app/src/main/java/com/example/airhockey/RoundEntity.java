@@ -119,8 +119,19 @@ public abstract class RoundEntity extends Entity {
     }
 
     public Vector2D checkCircleCollisionWithDirection(RoundEntity other) {
-        float dx = centerPointX - other.centerPointX;
-        float dy = centerPointY - other.centerPointY;
+        float dx, dy;
+        if(other.centerPointX > centerPointX){
+            dx = other.centerPointX - centerPointX;
+        }else{
+            dx = centerPointX - other.centerPointX;
+        }
+
+        if(other.centerPointY > centerPointY){
+            dy = other.centerPointY - centerPointY;
+        }else{
+            dy = centerPointY - other.centerPointY;
+        }
+
         int distance = (int) Math.sqrt(dx * dx + dy * dy);
 
         if (distance > radius + other.radius) {

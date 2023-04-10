@@ -57,7 +57,7 @@ public class Puck extends RoundEntity implements Runnable{
                         (int) ((deviceWidth)*64.0*2/1080.0), (int) ((deviceWidth)*64.0*2/1080.0), true));
 
         velocity = new Vector2D(x,y);
-        setVelocity(new Vector2D(1,1));
+        setVelocity(new Vector2D(0,0));
         Thread thread = new Thread(this, "PuckThread");
         rpPrevCoords = new float[2];
         bpPrevCoords = new float[2];
@@ -79,15 +79,30 @@ public class Puck extends RoundEntity implements Runnable{
                 Player p1 = pitch.getPlayer();
                 Vector2D direction;
                 if ((direction= checkCircleCollisionWithDirection(p1))!=null) {
+                    System.out.println("Kollision");
+                    setVelocity(new Vector2D(1,1));
                     handlePuckCollisionWithDirection(this, direction);
-                    System.out.println("X= " + velocity.getX());
-                    System.out.println("Y= " + velocity.getY());
-                    x += velocity.getX();
-                    y += velocity.getY();
-
                 }
 
+                if (x <= 0 || x >= deviceWidth - radius * 2) {
+                    velocity.setX(velocity.getX()*-1);
+                    System.out.println("1");
+                }
+                if (x < 0) {
+                    x = 0;
+                    System.out.println("2");
+                }
+                if (x > deviceWidth - radius * 2) {
+                    x = deviceWidth - radius * 2;
+                    System.out.println("3");
+                }
+                if (y <= 0 || y >= deviceHeight - radius * 2){
+                    velocity.setY(velocity.getY()*-1);
+                    System.out.println("4");
+                }
 
+                x += getVelocity().getX();
+                y += getVelocity().getY();
             }
 
             try {

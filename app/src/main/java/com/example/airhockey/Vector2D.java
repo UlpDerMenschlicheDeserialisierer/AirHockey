@@ -17,6 +17,9 @@ public class Vector2D {
         return y;
     }
 
+    public void setX(double x){this.x = x;}
+    public void setY(double y){this.y = y;}
+
     public double getMagnitude() {
         return Math.sqrt(x * x + y * y);
     }
