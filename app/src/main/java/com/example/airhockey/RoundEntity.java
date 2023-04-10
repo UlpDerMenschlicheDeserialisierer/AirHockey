@@ -155,7 +155,7 @@ public abstract class RoundEntity extends Entity {
         double speed = puck.getVelocity().getMagnitude();
         double dx = speed * Math.cos(angleOfReflection);
         double dy = speed * Math.sin(angleOfReflection);
-        Vector2D newVelocity = new Vector2D(dx, dy);
+        Vector2D newVelocity = new Vector2D(dx, -dy);
 
         // Setze die neue Bewegungsrichtung des Pucks
         puck.setVelocity(newVelocity);
