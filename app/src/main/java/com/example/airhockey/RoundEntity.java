@@ -1,6 +1,5 @@
 package com.example.airhockey;
 import android.graphics.Bitmap;
-import android.view.MotionEvent;
 
 /**
  * A round entity subclass
@@ -113,11 +112,42 @@ public abstract class RoundEntity extends Entity {
      * @return the distance between them
      */
     float distanceFrom(RoundEntity other) {
-        return (float) Math.sqrt(
-                (centerPointX - other.centerPointX) *
-                        (centerPointX - other.centerPointX)
-                        + (centerPointY - other.centerPointY) *
-                        (centerPointY - other.centerPointY));
+        float dx = centerPointX - other.centerPointX;
+        float dy = centerPointY - other.centerPointY;
+        int distance = (int) Math.sqrt(dx*dx + dy*dy);
+        return distance;
+    }
+
+    public Vector2D checkCircleCollisionWithDirection(RoundEntity other) {
+        float dx = centerPointX - other.centerPointX;
+        float dy = centerPointY - other.centerPointY;
+        int distance = (int) Math.sqrt(dx * dx + dy * dy);
+
+        if (distance > radius + other.radius) {
+            // Die Kreise berühren sich nicht
+            return null;
+        }
+
+        // Die Kreise berühren sich
+        Vector2D direction = new Vector2D(dx, dy);
+        direction.normalize();
+        return direction;
+    }
+
+    public void handlePuckCollisionWithDirection(Puck puck, Vector2D collisionDirection) {
+        // Berechne die Winkel zwischen der aktuellen Bewegungsrichtung des Pucks und dem Kollisionsvektor
+        double angleOfIncidence = Math.atan2(puck.getVelocity().getY(), puck.getVelocity().getX());
+        double angleOfCollision = Math.atan2(collisionDirection.getY(), collisionDirection.getX());
+        double angleOfReflection = 2 * angleOfCollision - angleOfIncidence;
+
+        // Berechne die neue Bewegungsrichtung des Pucks anhand des reflektierten Winkels
+        double speed = puck.getVelocity().getMagnitude();
+        double dx = speed * Math.cos(angleOfReflection);
+        double dy = speed * Math.sin(angleOfReflection);
+        Vector2D newVelocity = new Vector2D(dx, dy);
+
+        // Setze die neue Bewegungsrichtung des Pucks
+        puck.setVelocity(newVelocity);
     }
 
 }

@@ -12,6 +12,8 @@ public class Puck extends RoundEntity implements Runnable{
 
     private float dx;
 
+    private Vector2D velocity;
+
     /**
      * The puck's velocity on the Y-axis
      */
@@ -53,6 +55,9 @@ public class Puck extends RoundEntity implements Runnable{
                         BitmapFactory.decodeResource(pitch.getResources(),
                                 R.drawable.pukgelb),
                         (int) ((deviceWidth)*64.0*2/1080.0), (int) ((deviceWidth)*64.0*2/1080.0), true));
+
+        velocity = new Vector2D(x,y);
+        setVelocity(new Vector2D(1,1));
         Thread thread = new Thread(this, "PuckThread");
         rpPrevCoords = new float[2];
         bpPrevCoords = new float[2];
@@ -64,71 +69,24 @@ public class Puck extends RoundEntity implements Runnable{
         thread.start();
     }
 
+    public Vector2D getVelocity(){return velocity;}
 
-    @Override
+    public void setVelocity(Vector2D velocity){this.velocity = velocity;}
+
     public void run() {
         while (!pitch.getPlayer().isWinner() && !pitch.getPlayer().isWinner()) {
             if (!goal) {
-                if (x <= 0 || x >= deviceWidth - radius * 2)
-                    dx = -dx;
-                if (x < 0)
-                    x = 0;
-                if (x > deviceWidth - radius * 2)
-                    x = deviceWidth - radius * 2;
-                if (y <= 0 || y >= deviceHeight - radius * 2)
-                    dy = -dy;
-                Player player = pitch.getPlayer();
-                if (player != null) {
-                    if (distanceFrom(player) <= radius + player.radius) {
-                        while (distanceFrom(player) <= radius + player.radius) {
-                            x -= dx;
-                            centerPointX = x + radius;
-                            y -= dy;
-                            centerPointY = y + radius;
-                        }
-                        player.delay = 2;
-                        float m = dy / dx;
-                        float[] rpCoords = {player.getCenterPointX(), player.getCenterPointY()};
-                        // y - rpCoords[1] = m(x-rpCoords[0])
-                        // y = mx - m*rpCoords[0] + rpCoords[1]
-                        if (centerPointY < m * centerPointX - m * rpCoords[0] + rpCoords[1]) {
-                            if (centerPointY > player.centerPointY) {
-                                dy = dy;
-                                dx = -dx;
-                            } else {
-                                dy = -dy;
-                                dx = dx;
-                            }
-                        } else if (centerPointY > m * centerPointX - m * rpCoords[0] + rpCoords[1]) {
-                            if (centerPointY > player.centerPointY) {
-                                dx = dx;
-                                dy = -dy;
-                            } else {
-                                dx = -dx;
-                                dy = dy;
-                            }
-                        } else {
-                            dx = -dx;
-                            dy = -dy;
-                        }
-                    }
+                Player p1 = pitch.getPlayer();
+                Vector2D direction;
+                if ((direction= checkCircleCollisionWithDirection(p1))!=null) {
+                    handlePuckCollisionWithDirection(this, direction);
+                    System.out.println("X= " + velocity.getX());
+                    System.out.println("Y= " + velocity.getY());
+                    x += velocity.getX();
+                    y += velocity.getY();
+
                 }
-                if (dx == 0 && dy == 0) {
-                    centerPointX = deviceWidth / 2;
-                    x = centerPointX - radius;
-                    centerPointY = deviceHeight / 2;
-                    y = centerPointY - radius;
-                    dy = 2;
-                    dx = 2;
-                }
-                if (player != null) {
-                    rpPrevCoords[0] = player.getX();
-                    rpPrevCoords[1] = player.getY();
-                }
-                x += dx;
-                centerPointX += dx;
-                y += dy;
-                centerPointY += dy;
+
 
             }
 
