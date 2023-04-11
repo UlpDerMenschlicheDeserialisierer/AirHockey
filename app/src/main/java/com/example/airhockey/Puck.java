@@ -55,7 +55,6 @@ public class Puck extends RoundEntity implements Runnable{
                         BitmapFactory.decodeResource(pitch.getResources(),
                                 R.drawable.pukgelb),
                         (int) ((deviceWidth)*64.0*2/1080.0), (int) ((deviceWidth)*64.0*2/1080.0), true));
-
         velocity = new Vector2D(x,y);
         setVelocity(new Vector2D(0,0));
         Thread thread = new Thread(this, "PuckThread");
@@ -74,35 +73,39 @@ public class Puck extends RoundEntity implements Runnable{
     public void setVelocity(Vector2D velocity){this.velocity = velocity;}
 
     public void run() {
+        Player p1 = pitch.getPlayer();
+        float newX, newY;
         while (!pitch.getPlayer().isWinner() && !pitch.getPlayer().isWinner()) {
+            //System.out.println("Puck X: " + centerPointX);
+            //System.out.println("Puck Y: " + centerPointY);
             if (!goal) {
-                Player p1 = pitch.getPlayer();
                 Vector2D direction;
+                newX = x+radius;
+                newY = y+ radius;
+
                 if ((direction= checkCircleCollisionWithDirection(p1))!=null) {
-                    System.out.println("Kollision");
-                    setVelocity(new Vector2D(1,1));
+                    setVelocity(new Vector2D(2,2));
                     handlePuckCollisionWithDirection(this, direction);
                 }
 
                 if (x <= 0 || x >= deviceWidth - radius * 2) {
                     velocity.setX(velocity.getX()*-1);
-                    System.out.println("1");
                 }
                 if (x < 0) {
-                    x = 0;
-                    System.out.println("2");
+                    setX(0);
                 }
                 if (x > deviceWidth - radius * 2) {
-                    x = deviceWidth - radius * 2;
-                    System.out.println("3");
+                    setX(deviceWidth - radius * 2);
                 }
                 if (y <= 0 || y >= deviceHeight - radius * 2){
                     velocity.setY(velocity.getY()*-1);
-                    System.out.println("4");
                 }
 
-                x += getVelocity().getX();
-                y += getVelocity().getY();
+                newX += getVelocity().getX();
+                newY += getVelocity().getY();
+
+                setX(newX);
+                setY(newY);
             }
 
             try {

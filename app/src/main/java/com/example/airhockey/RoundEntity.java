@@ -118,23 +118,26 @@ public abstract class RoundEntity extends Entity {
         return distance;
     }
 
-    public Vector2D checkCircleCollisionWithDirection(RoundEntity other) {
+    public Vector2D checkCircleCollisionWithDirection(RoundEntity player) {
+        //System.out.println("Kollision überprüft");
         float dx, dy;
-        if(other.centerPointX > centerPointX){
-            dx = other.centerPointX - centerPointX;
+        //System.out.println("Puck X: " + centerPointX);
+        //System.out.println("Puck Y: " + centerPointY);
+        if(player.centerPointX > centerPointX){
+            dx = player.centerPointX - centerPointX;
         }else{
-            dx = centerPointX - other.centerPointX;
+            dx = centerPointX - player.centerPointX;
         }
 
-        if(other.centerPointY > centerPointY){
-            dy = other.centerPointY - centerPointY;
+        if(player.centerPointY > centerPointY){
+            dy = player.centerPointY - centerPointY;
         }else{
-            dy = centerPointY - other.centerPointY;
+            dy = centerPointY - player.centerPointY;
         }
 
         int distance = (int) Math.sqrt(dx * dx + dy * dy);
 
-        if (distance > radius + other.radius) {
+        if (distance > radius + player.radius) {
             // Die Kreise berühren sich nicht
             return null;
         }
@@ -155,7 +158,8 @@ public abstract class RoundEntity extends Entity {
         double speed = puck.getVelocity().getMagnitude();
         double dx = speed * Math.cos(angleOfReflection);
         double dy = speed * Math.sin(angleOfReflection);
-        Vector2D newVelocity = new Vector2D(dx, -dy);
+
+        Vector2D newVelocity = new Vector2D(-dx, -dy);
 
         // Setze die neue Bewegungsrichtung des Pucks
         puck.setVelocity(newVelocity);
