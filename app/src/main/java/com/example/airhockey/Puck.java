@@ -84,7 +84,7 @@ public class Puck extends RoundEntity implements Runnable{
 
                 if ((direction= checkCircleCollisionWithDirection(p1))!=null) {
                     setVelocity(new Vector2D(2,2));
-                    handlePuckCollisionWithDirection(this, direction);
+                    handlePuckCollisionWithDirection(this, direction, p1);
                 }
 
                 if (x <= 0 || x >= deviceWidth - radius * 2) {
@@ -102,6 +102,9 @@ public class Puck extends RoundEntity implements Runnable{
 
                 newX += getVelocity().getX();
                 newY += getVelocity().getY();
+
+                System.out.println(getVelocity().getX());
+                System.out.println(getVelocity().getY());
 
                 setX(newX);
                 setY(newY);

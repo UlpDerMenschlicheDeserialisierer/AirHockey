@@ -119,7 +119,6 @@ public abstract class RoundEntity extends Entity {
     }
 
     public Vector2D checkCircleCollisionWithDirection(RoundEntity player) {
-        //System.out.println("Kollision überprüft");
         float dx, dy;
 
         if(player.centerPointX > centerPointX){
@@ -142,17 +141,14 @@ public abstract class RoundEntity extends Entity {
         }
 
         // Die Kreise berühren sich
-        Vector2D direction = new Vector2D(dx, dy);
-        System.out.println("direction X: " + direction.getX());
-        System.out.println("direction Y: " + direction.getY());
+        Vector2D direction = new Vector2D(dx, dy); // Swap dx and dy here
         direction.normalize();
-        System.out.println("normalisiert X: " + direction.getX());
-        System.out.println("normalisiert Y: " + direction.getY());
         return direction;
     }
 
-    public void handlePuckCollisionWithDirection(Puck puck, Vector2D collisionDirection) {
-        double angleOfIncidence = Math.atan2(puck.getVelocity().getY(), puck.getVelocity().getX()); // negate velocity components to account for orientation
+    public void handlePuckCollisionWithDirection(Puck puck, Vector2D collisionDirection, RoundEntity player) {
+        // Berechne die Winkel zwischen der aktuellen Bewegungsrichtung des Pucks und dem Kollisionsvektor
+        double angleOfIncidence = Math.atan2(puck.y, puck.x);
         double angleOfCollision = Math.atan2(collisionDirection.getY(), collisionDirection.getX());
         double angleOfReflection = 2 * angleOfCollision - angleOfIncidence;
 
@@ -161,7 +157,13 @@ public abstract class RoundEntity extends Entity {
         double dx = speed * Math.cos(angleOfReflection);
         double dy = speed * Math.sin(angleOfReflection);
 
-        Vector2D newVelocity = new Vector2D(-dx, -dy);
+        // Reflect the puck in the appropriate direction based on the collision direction
+        /*
+        if(player.centerPointY > centerPointY){
+            dy = -dy;
+        }
+        */
+        Vector2D newVelocity = new Vector2D(dx, dy);
 
         // Setze die neue Bewegungsrichtung des Pucks
         puck.setVelocity(newVelocity);
