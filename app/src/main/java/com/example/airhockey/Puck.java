@@ -10,14 +10,14 @@ public class Puck extends RoundEntity implements Runnable{
     private static float deviceWidth = Resources.getSystem().getDisplayMetrics().widthPixels;
     private static float deviceHeight = Resources.getSystem().getDisplayMetrics().heightPixels;
 
-    private float dx;
+    private float newX;
 
     private Vector2D velocity;
 
     /**
      * The puck's velocity on the Y-axis
      */
-    private float dy;
+    private float newY;
 
     /**
      * A HockeyTable to get the Paddles
@@ -63,8 +63,8 @@ public class Puck extends RoundEntity implements Runnable{
         prevCoords = new float[2];
         goal = false;
         this.pitch = pitch;
-        dx = 0;
-        dy = 0;
+        newX = 0;
+        newY = 0;
         thread.start();
     }
 
@@ -74,7 +74,6 @@ public class Puck extends RoundEntity implements Runnable{
 
     public void run() {
         Player p1 = pitch.getPlayer();
-        float newX, newY;
         while (!pitch.getPlayer().isWinner() && !pitch.getPlayer().isWinner()) {
             //System.out.println("Puck X: " + centerPointX);
             //System.out.println("Puck Y: " + centerPointY);

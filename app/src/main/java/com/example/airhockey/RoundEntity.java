@@ -121,8 +121,7 @@ public abstract class RoundEntity extends Entity {
     public Vector2D checkCircleCollisionWithDirection(RoundEntity player) {
         //System.out.println("Kollision überprüft");
         float dx, dy;
-        //System.out.println("Puck X: " + centerPointX);
-        //System.out.println("Puck Y: " + centerPointY);
+
         if(player.centerPointX > centerPointX){
             dx = player.centerPointX - centerPointX;
         }else{
@@ -144,13 +143,16 @@ public abstract class RoundEntity extends Entity {
 
         // Die Kreise berühren sich
         Vector2D direction = new Vector2D(dx, dy);
+        System.out.println("direction X: " + direction.getX());
+        System.out.println("direction Y: " + direction.getY());
         direction.normalize();
+        System.out.println("normalisiert X: " + direction.getX());
+        System.out.println("normalisiert Y: " + direction.getY());
         return direction;
     }
 
     public void handlePuckCollisionWithDirection(Puck puck, Vector2D collisionDirection) {
-        // Berechne die Winkel zwischen der aktuellen Bewegungsrichtung des Pucks und dem Kollisionsvektor
-        double angleOfIncidence = Math.atan2(puck.getVelocity().getY(), puck.getVelocity().getX());
+        double angleOfIncidence = Math.atan2(puck.getVelocity().getY(), puck.getVelocity().getX()); // negate velocity components to account for orientation
         double angleOfCollision = Math.atan2(collisionDirection.getY(), collisionDirection.getX());
         double angleOfReflection = 2 * angleOfCollision - angleOfIncidence;
 
