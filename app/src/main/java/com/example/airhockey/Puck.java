@@ -25,21 +25,6 @@ public class Puck extends RoundEntity implements Runnable{
     private Pitch pitch;
 
     /**
-     * The puck's previous coordinates
-     */
-    private float[] prevCoords;
-
-    /**
-     * The previous coordinates of the red paddle
-     */
-    private float[] rpPrevCoords;
-
-    /**
-     * The previous coordinates of the blue paddle
-     */
-    private float[] bpPrevCoords;
-
-    /**
      * If the game is in goal mode
      */
     private boolean goal;
@@ -58,9 +43,6 @@ public class Puck extends RoundEntity implements Runnable{
         velocity = new Vector2D(x,y);
         setVelocity(new Vector2D(0,0));
         Thread thread = new Thread(this, "PuckThread");
-        rpPrevCoords = new float[2];
-        bpPrevCoords = new float[2];
-        prevCoords = new float[2];
         goal = false;
         this.pitch = pitch;
         newX = 0;
@@ -83,7 +65,7 @@ public class Puck extends RoundEntity implements Runnable{
                 newY = y+ radius;
 
                 if ((direction= checkCircleCollisionWithDirection(p1))!=null) {
-                    setVelocity(new Vector2D(2,2));
+                    setVelocity(new Vector2D(1,1));
                     handlePuckCollisionWithDirection(this, direction, p1);
                 }
 
@@ -103,8 +85,8 @@ public class Puck extends RoundEntity implements Runnable{
                 newX += getVelocity().getX();
                 newY += getVelocity().getY();
 
-                System.out.println(getVelocity().getX());
-                System.out.println(getVelocity().getY());
+                //System.out.println(getVelocity().getX());
+                //System.out.println(getVelocity().getY());
 
                 setX(newX);
                 setY(newY);

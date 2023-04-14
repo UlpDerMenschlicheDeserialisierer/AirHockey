@@ -4,6 +4,7 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.view.MotionEvent;
+import android.view.VerifiedKeyEvent;
 
 /**
  * A player-controlled paddle
@@ -18,6 +19,8 @@ class Player extends RoundEntity {
     /**
      * A variable showing if the player won
      */
+
+    private Vector2D velocity;
     private boolean isWinner;
 
     public int delay;
@@ -38,10 +41,15 @@ class Player extends RoundEntity {
                         BitmapFactory.decodeResource(
                                 pitch.getResources(), R.drawable.skinblue),
                         (int) ((deviceWidth)*128.0*2/1080.0), (int) ((deviceWidth)*128.0*2/1080.0), true));
+        velocity = new Vector2D(0,0);
         isWinner = false;
         this.goal = goal;
         delay = 0;
     }
+
+    public void setVelocity(Vector2D velocity){this.velocity=velocity;}
+
+    public Vector2D getVelocity(){return velocity;}
 
     /**
      * Get the paddle's goal

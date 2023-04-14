@@ -121,17 +121,8 @@ public abstract class RoundEntity extends Entity {
     public Vector2D checkCircleCollisionWithDirection(RoundEntity player) {
         float dx, dy;
 
-        if(player.centerPointX > centerPointX){
-            dx = player.centerPointX - centerPointX;
-        }else{
-            dx = centerPointX - player.centerPointX;
-        }
-
-        if(player.centerPointY > centerPointY){
-            dy = player.centerPointY - centerPointY;
-        }else{
-            dy = centerPointY - player.centerPointY;
-        }
+        dx = player.centerPointX - centerPointX;
+        dy = player.centerPointY - centerPointY;
 
         int distance = (int) Math.sqrt(dx * dx + dy * dy);
 
@@ -146,27 +137,21 @@ public abstract class RoundEntity extends Entity {
         return direction;
     }
 
-    public void handlePuckCollisionWithDirection(Puck puck, Vector2D collisionDirection, RoundEntity player) {
-        // Berechne die Winkel zwischen der aktuellen Bewegungsrichtung des Pucks und dem Kollisionsvektor
-        double angleOfIncidence = Math.atan2(puck.y, puck.x);
+    public void handlePuckCollisionWithDirection(Puck puck, Vector2D collisionDirection, Player player) {
+        // Berechne den Winkel zwischen der aktuellen Bewegungsrichtung des Pucks und dem Kollisionsvektor
+        double angleOfIncidence = Math.atan2(puck.getVelocity().getY(), puck.getVelocity().getX());
         double angleOfCollision = Math.atan2(collisionDirection.getY(), collisionDirection.getX());
-        double angleOfReflection = 2 * angleOfCollision - angleOfIncidence;
 
-        // Berechne die neue Bewegungsrichtung des Pucks anhand des reflektierten Winkels
-        double speed = puck.getVelocity().getMagnitude();
-        double dx = speed * Math.cos(angleOfReflection);
-        double dy = speed * Math.sin(angleOfReflection);
+        // Berechne den Winkel, um den der Puck reflektiert werden soll, indem der Winkel zwischen der Kollisionsrichtung und der x-Achse des Koordinatensystems um 180 Grad gedreht wird.
+        double angleOfOppositeDirection = angleOfCollision + Math.PI;
 
-        // Reflect the puck in the appropriate direction based on the collision direction
-        /*
-        if(player.centerPointY > centerPointY){
-            dy = -dy;
-        }
-        */
-        Vector2D newVelocity = new Vector2D(dx, dy);
+        // Berechne die x- und y-Komponenten der neuen Bewegungsrichtung des Pucks basierend auf dem reflektierten Winkel und der aktuellen Geschwindigkeit des Pucks.
+        double speed = player.getVelocity().getMagnitude();
+        double dx = speed * Math.cos(angleOfOppositeDirection);
+        double dy = speed * Math.sin(angleOfOppositeDirection);
 
         // Setze die neue Bewegungsrichtung des Pucks
-        puck.setVelocity(newVelocity);
+        puck.setVelocity(new Vector2D(dx, dy));
     }
 
 }
