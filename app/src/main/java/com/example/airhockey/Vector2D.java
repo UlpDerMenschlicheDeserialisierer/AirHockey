@@ -41,4 +41,11 @@ public class Vector2D {
     public static double dotProduct(Vector2D v1, Vector2D v2) {
         return v1.getX() * v2.getX() + v1.getY() * v2.getY();
     }
+
+    public Vector2D multiply(double faktor){return new Vector2D(x*faktor, y*faktor);}
+
+    //Skalarprodukt
+    public double dot(Vector2D other) {
+        return this.x * other.x + this.y * other.y;
+    }
 }

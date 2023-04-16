@@ -27,6 +27,8 @@ class Player extends RoundEntity {
 
     private static float deviceWidth = Resources.getSystem().getDisplayMetrics().widthPixels;
 
+    private FingerTracker fingerTracker = new FingerTracker();
+
     /**
      * Create a new Red Paddle
      *
@@ -45,8 +47,10 @@ class Player extends RoundEntity {
         isWinner = false;
         this.goal = goal;
         delay = 0;
+        fingerTracker.addFingerPosition(new Vector2D(x, y));
     }
 
+    public FingerTracker getFingerTracker(){return fingerTracker;}
     public void setVelocity(Vector2D velocity){this.velocity=velocity;}
 
     public Vector2D getVelocity(){return velocity;}

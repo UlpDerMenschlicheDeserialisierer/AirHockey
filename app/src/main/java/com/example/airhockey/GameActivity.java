@@ -106,19 +106,10 @@ public class GameActivity extends AppCompatActivity {
         int action = event.getActionMasked();
         float playerRadius = pitch.getPlayer().radius;
 
-        //Paramter für Geschwindigkeitsberechnung des Spielers
-        float lastX=0, lastY=0;
-        long lastTimestamp = 0;
-        float currentSpeedX, currentSpeedY;
-
         switch (action) {
             case MotionEvent.ACTION_DOWN:
                 xDown1 = event.getX();
                 yDown1 = event.getY();
-
-                lastX = xDown1;
-                lastY = yDown1;
-                lastTimestamp = System.currentTimeMillis();
 
                 if(xDown1 > playerRadius && xDown1< pitch.getWidth() - playerRadius){
                     if(yDown1 > pitch.getHeight()/2-playerRadius/2 && yDown1< pitch.getHeight()-playerRadius*2){
@@ -131,15 +122,7 @@ public class GameActivity extends AppCompatActivity {
                 xDown1 = event.getX();
                 yDown1 = event.getY();
 
-                long currentTimestamp = System.currentTimeMillis();
-                float deltaX = xDown1 - lastX;
-                float deltaY = yDown1 - lastY;
-                float deltaTime = (currentTimestamp - lastTimestamp)/1000000;
-
-                float dx = (deltaX/deltaTime)*10000;
-                float dy = (deltaY/deltaTime)*10000;
-
-                pitch.getPlayer().setVelocity(new Vector2D(dx, dy));
+                pitch.getPlayer().getFingerTracker().addFingerPosition(new Vector2D(xDown1, yDown1));
 
                 //pitch.getPlayer().setVelocity();
                 float newX = xDown1;
@@ -162,9 +145,6 @@ public class GameActivity extends AppCompatActivity {
                 pitch.getPlayer().setX(newX);
                 pitch.getPlayer().setY(newY);
 
-                lastX = xDown1;
-                lastY = yDown1;
-                lastTimestamp = currentTimestamp;
                 return true;
             default:
                 return super.onTouchEvent(event);
