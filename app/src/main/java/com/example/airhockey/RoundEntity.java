@@ -21,10 +21,9 @@ public abstract class RoundEntity extends Entity {
      */
     float radius;
 
-    /**
-     * The entity's mass
-     */
-    float mass;
+    FingerTracker fingerTracker;
+
+    Vector2D velocity;
 
     /**
      * Initialize a new round entity
@@ -33,16 +32,19 @@ public abstract class RoundEntity extends Entity {
      * @param y   The entity's x-coordinate
      * @param bmp A Bitmap
      */
-    RoundEntity(float x, float y, float mass, Bitmap bmp) {
+    RoundEntity(float x, float y, Bitmap bmp) {
         super(x - (float) bmp.getWidth() / 2, y - (float) bmp.getHeight() / 2,
                 bmp);
-        this.mass = mass;
         radius = bmp.getWidth() / 2;
         centerPointX = x + radius;
         x -= radius;
         centerPointY = y + radius;
         y -= radius;
     }
+
+    public Vector2D getVelocity(){return velocity;}
+
+    public void setVelocity(Vector2D velocity){this.velocity = velocity;}
 
     /**
      * Get the center point x-coordinate
@@ -73,14 +75,7 @@ public abstract class RoundEntity extends Entity {
         return radius;
     }
 
-    /**
-     * Get the entity's mass
-     *
-     * @return the entity's mass
-     */
-    public float getMass() {
-        return mass;
-    }
+    public FingerTracker getFingerTracker(){return fingerTracker;}
 
 
     /**
@@ -105,19 +100,6 @@ public abstract class RoundEntity extends Entity {
         centerPointY = y + radius;
     }
 
-    /**
-     * Get the distance between 2 round entities
-     *
-     * @param other another RoundEntity
-     * @return the distance between them
-     */
-    float distanceFrom(RoundEntity other) {
-        float dx = centerPointX - other.centerPointX;
-        float dy = centerPointY - other.centerPointY;
-        int distance = (int) Math.sqrt(dx*dx + dy*dy);
-        return distance;
-    }
-
     public Vector2D checkCircleCollisionWithDirection(RoundEntity player) {
         float dx, dy;
 
@@ -137,7 +119,7 @@ public abstract class RoundEntity extends Entity {
         return direction;
     }
 
-    public void handlePuckCollisionWithDirection(Puck puck, Vector2D collisionDirection, Player player) {
+    public void handlePuckCollisionWithDirection(Puck puck, Vector2D collisionDirection, RoundEntity player) {
         // Berechne den Winkel zwischen der aktuellen Bewegungsrichtung des Pucks und dem Kollisionsvektor
         double angleOfIncidence = Math.atan2(puck.getVelocity().getY(), puck.getVelocity().getX());
         double angleOfCollision = Math.atan2(collisionDirection.getY(), collisionDirection.getX());
@@ -146,7 +128,7 @@ public abstract class RoundEntity extends Entity {
         double angleOfOppositeDirection = angleOfCollision + Math.PI;
 
         // Berechne die x- und y-Komponenten der neuen Bewegungsrichtung des Pucks basierend auf dem reflektierten Winkel und der aktuellen Geschwindigkeit des Pucks.
-        double speed = (player.getFingerTracker().getFingerVelocity().getMagnitude() * puck.getVelocity().getMagnitude());
+        double speed = (player.getFingerTracker().getFingerVelocity().getMagnitude() + puck.getVelocity().getMagnitude());
         double dx = speed * Math.cos(angleOfOppositeDirection);
         double dy = speed * Math.sin(angleOfOppositeDirection);
 

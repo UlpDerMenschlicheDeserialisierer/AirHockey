@@ -70,7 +70,7 @@ public class GameActivity extends AppCompatActivity {
         Intent intent = getIntent();
         difficulty = intent.getStringExtra("DIFFICULTY");
         if (difficulty != null)
-            pitch = new Pitch(this, difficulty);
+            pitch = new Pitch(this);
         else
             pitch = new Pitch(this);
         requestWindowFeature(Window.FEATURE_NO_TITLE);

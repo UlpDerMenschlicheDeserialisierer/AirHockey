@@ -5,10 +5,6 @@ import android.graphics.Canvas;
 
 /**
  * The parent class for all entities on the Game Board
- *
- * @author David Kaluta
- * @version 21
- * @since 1
  */
 public abstract class Entity {
 

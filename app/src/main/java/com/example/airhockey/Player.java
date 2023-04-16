@@ -23,11 +23,8 @@ class Player extends RoundEntity {
     private Vector2D velocity;
     private boolean isWinner;
 
-    public int delay;
-
     private static float deviceWidth = Resources.getSystem().getDisplayMetrics().widthPixels;
 
-    private FingerTracker fingerTracker = new FingerTracker();
 
     /**
      * Create a new Red Paddle
@@ -38,7 +35,7 @@ class Player extends RoundEntity {
      * @param pitch   a HockeyTable for resource getting
      */
     Player(int x, int y, Goal goal, Pitch pitch) {
-        super(x, y, 2.5f,
+        super(x, y,
                 Bitmap.createScaledBitmap(
                         BitmapFactory.decodeResource(
                                 pitch.getResources(), R.drawable.skinblue),
@@ -46,11 +43,10 @@ class Player extends RoundEntity {
         velocity = new Vector2D(0,0);
         isWinner = false;
         this.goal = goal;
-        delay = 0;
+        fingerTracker = new FingerTracker();
         fingerTracker.addFingerPosition(new Vector2D(x, y));
     }
 
-    public FingerTracker getFingerTracker(){return fingerTracker;}
     public void setVelocity(Vector2D velocity){this.velocity=velocity;}
 
     public Vector2D getVelocity(){return velocity;}

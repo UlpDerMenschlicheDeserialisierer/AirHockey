@@ -8,7 +8,7 @@ public class FingerTracker {
     private long lastUpdateTime;
     private Vector2D fingerVelocity;
 
-    private int maxVelocity = 15;
+    private int maxVelocity = 10;
 
     public FingerTracker() {
         fingerPositions = new ArrayList<>();
@@ -27,6 +27,8 @@ public class FingerTracker {
             if (fingerPositions.size() > 1) { // Calculate finger velocity
                 Vector2D lastPosition = fingerPositions.get(fingerPositions.size() - 2);
                 fingerVelocity = position.subtract(position, lastPosition).multiply(0.1); // Multiply by 20 to convert to pixels per second
+
+                //Set max velocity
                 if(fingerVelocity.getX() > maxVelocity){fingerVelocity.setX(maxVelocity);} else if (fingerVelocity.getX()<-maxVelocity) {fingerVelocity.setX(-maxVelocity);}
                 if(fingerVelocity.getY() > maxVelocity){fingerVelocity.setY(maxVelocity);} else if (fingerVelocity.getY()<-maxVelocity) {fingerVelocity.setY(-maxVelocity);}
             }

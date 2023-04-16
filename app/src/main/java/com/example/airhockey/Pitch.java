@@ -14,28 +14,14 @@ import androidx.annotation.NonNull;
 import java.util.Timer;
 import java.util.TimerTask;
 
-
-/**
- * The View for the game
- *
- * @author David Kaluta
- * @version 24
- * @since 1
- */
 public class Pitch extends View {
 
     private static float deviceWidth = Resources.getSystem().getDisplayMetrics().widthPixels;
     private static float deviceHeight = Resources.getSystem().getDisplayMetrics().heightPixels;
-
-    /**
-     * A red paddle (PC)
-     */
     Player player;
 
-    /**
-     * A blue paddle (NPC)
-     */
-    //BluePaddle bp;
+
+    Bot bot;
 
     /**
      * A puck
@@ -47,10 +33,6 @@ public class Pitch extends View {
      */
     Bitmap bg;
 
-    /**
-     * A separator line
-     */
-    Bitmap line;
 
     /**
      * A Paint to draw text with
@@ -67,10 +49,6 @@ public class Pitch extends View {
      */
     int pauseTime;
 
-    /**
-     * The game's difficulty
-     */
-    String difficulty;
 
     /**
      * Create a HockeyTable with a difficulty
@@ -80,7 +58,6 @@ public class Pitch extends View {
      */
     public Pitch(Context context, @NonNull String difficulty) {
         super(context);
-        this.difficulty = difficulty;
         paint = new Paint();
         int deviceWidth = Resources.getSystem().getDisplayMetrics().widthPixels;
         int deviceHeight = Resources.getSystem().getDisplayMetrics().heightPixels;
@@ -91,6 +68,8 @@ public class Pitch extends View {
                 , deviceWidth, deviceHeight, true);
         player = new Player(deviceWidth / 2, 7 * deviceHeight / 8,
                 new Goal(deviceWidth / 4, 0, this), this);
+
+        bot = new Bot(deviceWidth / 2, deviceHeight / 8, this);
 
         p = new Puck(deviceWidth / 2, deviceHeight / 2, this);
     }
@@ -114,6 +93,8 @@ public class Pitch extends View {
         player = new Player(deviceWidth / 2, 7 * deviceHeight / 8,
                 new Goal(deviceWidth / 4, 0, this), this);
 
+        bot = new Bot(deviceWidth / 2, deviceHeight / 8, this);
+
         p = new Puck(deviceWidth / 2, deviceHeight / 2, this);
     }
 
@@ -126,6 +107,8 @@ public class Pitch extends View {
         return player;
     }
 
+    public Bot getBot(){return bot;}
+
 
     /**
      * Draw everything
@@ -137,6 +120,7 @@ public class Pitch extends View {
         c.drawBitmap(bg, 0, 0, null);
         player.draw(c);
         player.getGoal().draw(c);
+        bot.draw(c);
         p.draw(c);
         paint.setTextSize(144);
         paint.setColor(Color.WHITE);

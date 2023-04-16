@@ -35,7 +35,7 @@ public class Puck extends RoundEntity implements Runnable{
      * @param y    The entity's x-coordinate
      */
     Puck(float x, float y, Pitch pitch) {
-        super(x, y, 0.5f,
+        super(x, y,
                 Bitmap.createScaledBitmap(
                         BitmapFactory.decodeResource(pitch.getResources(),
                                 R.drawable.pukgelb),
@@ -56,7 +56,8 @@ public class Puck extends RoundEntity implements Runnable{
 
     public void run() {
         Player p1 = pitch.getPlayer();
-        while (!pitch.getPlayer().isWinner() && !pitch.getPlayer().isWinner()) {
+        Bot bot = pitch.getBot();
+        while (!p1.isWinner() && !bot.isWinner()) {
             //System.out.println("Puck X: " + centerPointX);
             //System.out.println("Puck Y: " + centerPointY);
             if (!goal) {
@@ -65,8 +66,13 @@ public class Puck extends RoundEntity implements Runnable{
                 newY = y+ radius;
 
                 if ((direction= checkCircleCollisionWithDirection(p1))!=null) {
-                    setVelocity(new Vector2D(1,1));
+                    //setVelocity(new Vector2D(1,1));
                     handlePuckCollisionWithDirection(this, direction, p1);
+                }
+
+                if ((direction= checkCircleCollisionWithDirection(bot))!=null) {
+                    //setVelocity(new Vector2D(1,1));
+                    handlePuckCollisionWithDirection(this, direction, bot);
                 }
 
                 if (x <= 0 || x >= deviceWidth - radius * 2) {
