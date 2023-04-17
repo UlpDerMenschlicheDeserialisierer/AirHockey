@@ -66,12 +66,12 @@ public class Puck extends RoundEntity implements Runnable{
                 newY = y+ radius;
 
                 if ((direction= checkCircleCollisionWithDirection(p1))!=null) {
-                    //setVelocity(new Vector2D(1,1));
+                    setVelocity(new Vector2D(2,2));
                     handlePuckCollisionWithDirection(this, direction, p1);
                 }
 
                 if ((direction= checkCircleCollisionWithDirection(bot))!=null) {
-                    //setVelocity(new Vector2D(1,1));
+                    setVelocity(new Vector2D(2,2));
                     handlePuckCollisionWithDirection(this, direction, bot);
                 }
 

@@ -129,6 +129,10 @@ public abstract class RoundEntity extends Entity {
 
         // Berechne die x- und y-Komponenten der neuen Bewegungsrichtung des Pucks basierend auf dem reflektierten Winkel und der aktuellen Geschwindigkeit des Pucks.
         double speed = (player.getFingerTracker().getFingerVelocity().getMagnitude() + puck.getVelocity().getMagnitude());
+
+        if(speed>10){
+            speed=10;
+        }
         double dx = speed * Math.cos(angleOfOppositeDirection);
         double dy = speed * Math.sin(angleOfOppositeDirection);
 
