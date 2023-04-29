@@ -55,8 +55,8 @@ public class MainActivity extends AppCompatActivity {
             public boolean onTouch(View view, MotionEvent motionEvent) {
                 if (motionEvent.getAction()== MotionEvent.ACTION_DOWN) {
                     buttonSinglePlayer.startAnimation(scaleUp);
-                    // Wait 60ms before opening calling the Function
-                    new Handler().postDelayed(() -> goToGame(view), 60);
+                    // Wait 150ms before opening calling the Function
+                    new Handler().postDelayed(() -> goToGame(view), 150);
                 } else if (motionEvent.getAction()== MotionEvent.ACTION_UP) {
                     buttonSinglePlayer.startAnimation(scaleDown);
                 }

@@ -46,42 +46,41 @@
         android:id="@+id/buttonSinglePlayer"
         android:layout_width="175dp"
         android:layout_height="wrap_content"
-        android:background="@color/transparent"
+        android:background="@drawable/button_background"
         android:fontFamily="@font/montserrat"
-        android:foreground="@drawable/button_glow"
         android:lineSpacingExtra="4sp"
         android:text="@string/button_SingleplayerText"
         android:textAllCaps="true"
         android:textSize="20sp"
-        android:textStyle="bold"
+        android:textStyle="bold|italic"
         android:typeface="monospace"
+
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.114"
+        app:layout_constraintHorizontal_bias="0.068"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.499" />
+        app:layout_constraintVertical_bias="0.498"
+        />
 
     <Button
         android:id="@+id/buttonMultiPlayer"
         android:layout_width="175dp"
         android:layout_height="wrap_content"
-        android:background="@color/transparent"
+        android:background="@drawable/button_background"
         android:fontFamily="@font/montserrat"
-        android:foreground="@drawable/button_glow"
-        android:foregroundTintMode="src_over"
         android:lineSpacingExtra="4sp"
         android:text="@string/button_MultiplayerText"
         android:textAllCaps="true"
         android:textSize="20sp"
-        android:textStyle="normal|bold"
+        android:textStyle="bold|italic"
         android:typeface="monospace"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.978"
+        app:layout_constraintHorizontal_bias="0.932"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.499" />
+        app:layout_constraintVertical_bias="0.498" />
 
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/viewPager2"
