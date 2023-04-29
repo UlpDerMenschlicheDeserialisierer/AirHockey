@@ -18,6 +18,8 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 
+import com.google.firebase.firestore.FirebaseFirestore;
+
 public class MainActivity extends AppCompatActivity {
     private ViewPager2 viewPager2;
     private ArrayList<Integer> imageList;
@@ -25,6 +27,8 @@ public class MainActivity extends AppCompatActivity {
 
     private Button buttonSinglePlayer, buttonMultiPlayer;
     private Animation scaleUp, scaleDown;
+
+    private FirebaseFirestore firestore;
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
