@@ -4,16 +4,15 @@ public class Skin {
     private int id;
     private String name;
     private int price;
-
     private int purchased;
-    private String imagePath;
+    private int selected;
 
-    public Skin(int id, String name, int price, int purchased, String imagePath) {
+    public Skin(int id, String name, int price, int purchased, int selected) {
         this.id = id;
         this.name = name;
         this.price = price;
         this.purchased = purchased;
-        this.imagePath = imagePath;
+        this.selected = selected;
     }
 
     public int getId() {
@@ -48,13 +47,12 @@ public class Skin {
         this.purchased = purchased;
     }
 
-
-    public String getImagePath() {
-        return imagePath;
+    public int getSelected() {
+        return selected;
     }
 
-    public void setImagePath(String imagePath) {
-        this.imagePath = imagePath;
+    public void setSelected(int selected) {
+        this.selected = selected;
     }
 }
 

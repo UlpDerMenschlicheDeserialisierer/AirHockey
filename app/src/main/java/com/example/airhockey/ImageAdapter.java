@@ -1,9 +1,19 @@
 package com.example.airhockey;
 
+import android.annotation.SuppressLint;
+import android.app.AlertDialog;
+import android.content.Context;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
+
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 import java.util.ArrayList;
@@ -11,24 +21,67 @@ import java.util.ArrayList;
 public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHolder> {
 
     private ArrayList<Integer> imageList;
+    private ArrayList<Skin> skinList;
     private ViewPager2 viewPager2;
+    private TextView coinTextView;
+    private Animation scaleUp, scaleDown;
+    private Database db;
+    private Context context;
 
-    public ImageAdapter(ArrayList<Integer> imageList, ViewPager2 viewPager2) {
+    public ImageAdapter(ArrayList<Integer> imageList, ViewPager2 viewPager2, Database db, Context context, TextView coinTextView) {
         this.imageList = imageList;
+        this.skinList = new ArrayList<>();
         this.viewPager2 = viewPager2;
+        this.db = db;
+        this.coinTextView = coinTextView;
+        scaleUp = AnimationUtils.loadAnimation(context, R.anim.scale_up);
+        scaleDown = AnimationUtils.loadAnimation(context, R.anim.scale_down);
     }
 
+    @NonNull
     @Override
     public ImageViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.image_container, parent, false);
         return new ImageViewHolder(view);
     }
 
+    @SuppressLint({"ClickableViewAccessibility", "SetTextI18n"})
     @Override
     public void onBindViewHolder(ImageViewHolder holder, int position) {
-        holder.imageView.setImageResource(imageList.get(position));
-        if (position == imageList.size()-1){
-            viewPager2.post(runnable);
+        if (position < imageList.size()) {
+            holder.imageView.setImageResource(imageList.get(position));
+            skinList = db.getallSkins();
+            System.out.println(skinList);
+            holder.skinNameTextView.setText(skinList.get(position).getName() + " - " + skinList.get(position).getPrice());
+            // click listener für den Buy-Button
+            holder.buyButton.setOnTouchListener(new View.OnTouchListener() {
+                @Override
+                public boolean onTouch(View view, MotionEvent motionEvent) {
+                    if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
+                        holder.buyButton.startAnimation(scaleUp);
+                        if ((db.getCoins() - skinList.get(holder.getAdapterPosition()).getPrice()) < 0) {
+                            AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                            builder.setTitle("Not enough coins!");
+                            builder.setMessage("You don't have enough coins to purchase this skin.");
+                            builder.setPositiveButton("OK", null);
+                            builder.show();
+                        } else {
+                            // Immer zuerst Skin deselecten, dann neuen Skin selecten
+                            db.deselectOldSkin();
+                            db.purchaseSkin(holder.getAdapterPosition());
+                            // Coins aktualisieren
+                            db.insertCoin(db.getCoins() - skinList.get(holder.getAdapterPosition()).getPrice());
+                            coinTextView.setText("Coins: " + db.getCoins());
+                        }
+                    } else if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
+                        holder.buyButton.startAnimation(scaleDown);
+                    }
+                    return true;
+                }
+            });
+            if (position == imageList.size() - 1) {
+                viewPager2.post(runnable);
+            }
         }
     }
 
@@ -48,10 +101,14 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHol
     public static class ImageViewHolder extends RecyclerView.ViewHolder {
 
         public ImageView imageView;
+        public TextView skinNameTextView;
+        public Button buyButton;
 
         public ImageViewHolder(View itemView) {
             super(itemView);
             imageView = itemView.findViewById(R.id.imageView);
+            skinNameTextView = itemView.findViewById(R.id.skinNameTextView);
+            buyButton = itemView.findViewById(R.id.buyButton);
         }
     }
 }

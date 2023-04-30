@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:adjustViewBounds="true"
     android:outlineProvider="none"
     android:textAlignment="center"
@@ -18,11 +18,11 @@
         <ImageView
             android:id="@+id/imageView"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:background="@android:color/transparent"
             android:contentDescription="@string/skin1_contentDescription"
-            android:src="@drawable/skinblue" />
+            android:src="@drawable/mitschatten" />
 
         <TextView
             android:id="@+id/skinNameTextView"
@@ -38,8 +38,8 @@
             android:id="@+id/buyButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/montserrat"
             android:background="@drawable/button_background"
+            android:fontFamily="@font/montserrat"
             android:text="Buy"
             android:textSize="25sp"
             android:textStyle="bold" />

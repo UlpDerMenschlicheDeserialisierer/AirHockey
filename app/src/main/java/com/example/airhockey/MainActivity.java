@@ -24,13 +24,16 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.TextView;
+
+import org.w3c.dom.Text;
 
 public class MainActivity extends AppCompatActivity {
     private ViewPager2 viewPager2;
     private ArrayList<Integer> imageList;
     private ImageAdapter adapter;
-
-    private Button buttonSinglePlayer, buttonMultiPlayer;
+    private TextView coinTextView;
+    private Button buttonSinglePlayer, buttonMultiPlayer, buttonBuy;
     private Animation scaleUp, scaleDown;
     private Database db;
 
@@ -38,11 +41,12 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // PNGs der Skins im internen Speicher ablegen
-        saveImagesToInternalStorage();
         // Datenbankinstanz erstellen
         db = new Database(this);
         setContentView(R.layout.activity_main);
+        // Coin Text View
+        coinTextView = findViewById(R.id.textViewCoins);
+        coinTextView.setText(coinTextView.getText() + " " + db.getCoins());
         // Skins in Slider laden
         init();
         setUpTransformer();
@@ -53,7 +57,6 @@ public class MainActivity extends AppCompatActivity {
                 super.onPageSelected(position);
             }
         });
-
         //Single Player Button
         buttonSinglePlayer = findViewById(R.id.buttonSinglePlayer);
         //Multi Player Button
@@ -88,6 +91,7 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             }
         });
+
     }
 
     private void goToGame(View view) {
@@ -109,10 +113,11 @@ public class MainActivity extends AppCompatActivity {
 
     private void init() {
         viewPager2 = findViewById(R.id.viewPager2);
+
         imageList = new ArrayList<>();
 
-        imageList.add(R.drawable.skinblue);
-        imageList.add(R.drawable.skin2);
+        imageList.add(R.drawable.mitschatten);
+        imageList.add(R.drawable.ohneschatten);
         imageList.add(R.drawable.skin3);
         imageList.add(R.drawable.skin4);
         imageList.add(R.drawable.skin5);
@@ -120,7 +125,7 @@ public class MainActivity extends AppCompatActivity {
         imageList.add(R.drawable.skin7);
         imageList.add(R.drawable.skin8);
 
-        adapter = new ImageAdapter(imageList, viewPager2);
+        adapter = new ImageAdapter(imageList, viewPager2, db, this, coinTextView);
 
         viewPager2.setAdapter(adapter);
         viewPager2.setOffscreenPageLimit(3);
@@ -154,6 +159,7 @@ public class MainActivity extends AppCompatActivity {
         return super.dispatchTouchEvent(ev);
     }
 
+    /*
     public void saveImagesToInternalStorage() {
         SharedPreferences sharedPreferences = getPreferences(Context.MODE_PRIVATE);
         boolean imagesSaved = sharedPreferences.getBoolean("imagesSaved", false);
@@ -179,7 +185,7 @@ public class MainActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
         }
-    }
+    }*/
     @Override
     protected void onDestroy() {
         super.onDestroy();

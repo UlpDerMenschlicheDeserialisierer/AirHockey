@@ -7,7 +7,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class DataBaseHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "airhockey.db";
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 3;
 
     public DataBaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -15,14 +15,18 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL("CREATE TABLE coins (amount INTEGER DEFAULT 0)");
-        db.execSQL("CREATE TABLE skins (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, price INTEGER, purchased INTEGER, pathToSkin TEXT)");
+        db.execSQL("CREATE TABLE IF NOT EXISTS coins (amount INTEGER DEFAULT 0)");
+        db.execSQL("CREATE TABLE IF NOT EXISTS skins (id INTEGER PRIMARY KEY, name TEXT, price INTEGER, purchased INTEGER, selected INTEGER)");
 
-        // Füge Standard-Skins hinzufügen
-        insertSkin(db, "BlueFire", 0,1,"skins/default.png"); // 1 = purchased, 0 = not purchased
-        insertSkin(db, "Red", 10, 0,"skins/red.png");
-        insertSkin(db, "Blue", 10,0, "skins/blue.png");
-        insertSkin(db, "Green", 20, 0,"skins/green.png");
+        // Standard-Skins hinzufügen
+        insertSkin(db,0, "BlueFire", 0,1, 1); // 1 = purchased, 0 = not purchased, 1 = selected, 0 = not selected
+        insertSkin(db,1,"Red", 10, 0, 0);
+        insertSkin(db,2, "Blue", 10,0, 0 );
+        insertSkin(db,3, "Green", 20, 0, 0);
+        insertSkin(db,4, "Yellow", 30, 0, 0);
+        insertSkin(db,5, "Purple", 40, 0, 0);
+        insertSkin(db,6, "Dark", 60, 0, 0);
+        insertSkin(db,7, "Orange", 80, 0, 0);
     }
 
     @Override
@@ -32,12 +36,13 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    private void insertSkin(SQLiteDatabase db, String name, int price,int purchased, String pathToSkin) {
+    private void insertSkin(SQLiteDatabase db, int id, String name, int price,int purchased, int selected) {
         ContentValues contentValues = new ContentValues();
+        contentValues.put("id", id);
         contentValues.put("name", name);
         contentValues.put("price", price);
         contentValues.put("purchased", purchased);
-        contentValues.put("pathToSkin", pathToSkin);
+        contentValues.put("selected", selected);
         db.insert("skins", null, contentValues);
     }
 }

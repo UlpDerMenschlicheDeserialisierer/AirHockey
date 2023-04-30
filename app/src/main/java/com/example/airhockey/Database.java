@@ -39,28 +39,54 @@ public class Database {
         return amount;
     }
 
-    public List<Skin> getSkins() {
-        List<Skin> skinsList = new ArrayList<>();
+    public ArrayList<Skin> getallSkins() {
+        ArrayList<Skin> skinsList = new ArrayList<>();
         Cursor cursor = db.rawQuery("SELECT * FROM skins", null);
         if (cursor.moveToFirst()) {
             int idIndex = cursor.getColumnIndex("id");
             int nameIndex = cursor.getColumnIndex("name");
             int priceIndex = cursor.getColumnIndex("price");
-            int purchasedIndex = cursor.getColumnIndex("price");
-            int imagePathIndex = cursor.getColumnIndex("pathToSkin");
+            int purchasedIndex = cursor.getColumnIndex("purchased");
+            int selectedIndex = cursor.getColumnIndex("selected");
 
             do {
                 int id = cursor.getInt(idIndex);
                 String name = cursor.getString(nameIndex);
                 int price = cursor.getInt(priceIndex);
                 int purchased = cursor.getInt(purchasedIndex);
-                String imagePath = cursor.getString(imagePathIndex);
+                int selected = cursor.getInt(selectedIndex);
 
-                Skin skin = new Skin(id, name, price, purchased, imagePath);
+                Skin skin = new Skin(id, name, price, purchased, selected);
                 skinsList.add(skin);
             } while (cursor.moveToNext());
         }
         cursor.close();
         return skinsList;
     }
+
+    public void purchaseSkin(int skinIndex) {
+        ContentValues values = new ContentValues();
+        values.put("purchased", 1);
+        values.put("selected", 1);
+        db.update("skins", values, "id=?", new String[]{String.valueOf(skinIndex)});
+    }
+
+    public int getSelectedSkinIndex() {
+        int index = -1;
+        Cursor cursor = db.rawQuery("SELECT * from skins WHERE selected = 1", null);
+        if (cursor.moveToFirst()) {
+            int idIndex = cursor.getColumnIndex("id");
+            index = cursor.getInt(idIndex);
+        }
+        cursor.close();
+        return index;
+    }
+
+    public void deselectOldSkin() {
+        int oldSelectedIndex = getSelectedSkinIndex();
+        ContentValues values = new ContentValues();
+        values.put("selected", 0);
+        db.update("skins", values, "selected=?", new String[]{String.valueOf(oldSelectedIndex)});
+    }
+
 }
