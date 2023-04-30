@@ -3,12 +3,19 @@ package com.example.airhockey;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.CompositePageTransformer;
 import androidx.viewpager2.widget.MarginPageTransformer;
 import androidx.viewpager2.widget.ViewPager2;
+
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import android.os.Handler;
@@ -18,8 +25,6 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 
-import com.google.firebase.firestore.FirebaseFirestore;
-
 public class MainActivity extends AppCompatActivity {
     private ViewPager2 viewPager2;
     private ArrayList<Integer> imageList;
@@ -27,14 +32,18 @@ public class MainActivity extends AppCompatActivity {
 
     private Button buttonSinglePlayer, buttonMultiPlayer;
     private Animation scaleUp, scaleDown;
-
-    private FirebaseFirestore firestore;
+    private Database db;
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        // PNGs der Skins im internen Speicher ablegen
+        saveImagesToInternalStorage();
+        // Datenbankinstanz erstellen
+        db = new Database(this);
         setContentView(R.layout.activity_main);
+        // Skins in Slider laden
         init();
         setUpTransformer();
 
@@ -124,16 +133,15 @@ public class MainActivity extends AppCompatActivity {
     public boolean dispatchTouchEvent(MotionEvent ev) {
         switch(ev.getAction()) {
             case MotionEvent.ACTION_UP:
-                // User has lifted their finger after a swipe
+                // User hat sein Finger nach einem Swipe angehoben
                 int current = viewPager2.getCurrentItem();
                 int total = adapter.getItemCount();
 
-                if(current == 0) {
-                    // User is at the first item, don't scroll left
-                } else if(current == total - 1) {
-                    // User is at the last item, don't scroll right
+                if(current == 0 || current == total - 1) {
+                    // User befindet sich beim ersten, oder letzten Skin, --> nicht nach recht oder links scrollen
+                    return super.dispatchTouchEvent(ev);
                 } else {
-                    // User is in between items, scroll left or right based on their swipe direction
+                    // User befindet sich zwischen zwei Items --> Nach rechts oder Links, je nach Swipe-Richtung wischen
                     float xDiff = ev.getX() - viewPager2.getX();
                     if(xDiff > 0) {
                         viewPager2.setCurrentItem(current - 1);
@@ -143,7 +151,38 @@ public class MainActivity extends AppCompatActivity {
                 }
                 break;
         }
-
         return super.dispatchTouchEvent(ev);
+    }
+
+    public void saveImagesToInternalStorage() {
+        SharedPreferences sharedPreferences = getPreferences(Context.MODE_PRIVATE);
+        boolean imagesSaved = sharedPreferences.getBoolean("imagesSaved", false);
+
+        if (!imagesSaved) {
+            try {
+                String[] imageNames = {"skin1.png", "skin2.png", "skin3.png", "skin4.png", "skin5.png", "skin6.png", "skin7.png", "skin8.png"};
+
+                for (String imageName : imageNames) {
+                    int resId = getResources().getIdentifier(imageName, "drawable", getPackageName());
+                    Bitmap bitmap = BitmapFactory.decodeResource(getResources(), resId);
+
+                    FileOutputStream outputStream = openFileOutput(imageName, Context.MODE_PRIVATE);
+                    bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream);
+                    outputStream.flush();
+                    outputStream.close();
+                }
+
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.putBoolean("imagesSaved", true);
+                editor.apply();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        db.close();
     }
 }
