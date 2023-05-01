@@ -34,6 +34,7 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHol
         this.viewPager2 = viewPager2;
         this.db = db;
         this.coinTextView = coinTextView;
+        this.context = context;
         scaleUp = AnimationUtils.loadAnimation(context, R.anim.scale_up);
         scaleDown = AnimationUtils.loadAnimation(context, R.anim.scale_down);
     }
@@ -48,10 +49,9 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHol
     @SuppressLint({"ClickableViewAccessibility", "SetTextI18n"})
     @Override
     public void onBindViewHolder(ImageViewHolder holder, int position) {
-        if (position < imageList.size()) {
+        if (position < 8 && holder.getAdapterPosition() < 8 ) {
             holder.imageView.setImageResource(imageList.get(position));
             skinList = db.getallSkins();
-            System.out.println(skinList);
             holder.skinNameTextView.setText(skinList.get(position).getName() + " - " + skinList.get(position).getPrice());
             // click listener für den Buy-Button
             holder.buyButton.setOnTouchListener(new View.OnTouchListener() {
