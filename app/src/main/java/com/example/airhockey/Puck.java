@@ -61,6 +61,9 @@ public class Puck extends RoundEntity implements Runnable{
             //System.out.println("Puck X: " + centerPointX);
             //System.out.println("Puck Y: " + centerPointY);
             if (!goal) {
+                //Tor überprüfung
+                //System.out.println(y-radius);
+
                 Vector2D direction;
                 newX = x+radius;
                 newY = y+ radius;
@@ -85,6 +88,7 @@ public class Puck extends RoundEntity implements Runnable{
                     setX(deviceWidth - radius * 2);
                 }
                 if (y <= 0 || y >= deviceHeight - radius * 2){
+                    System.out.println("Tor");
                     velocity.setY(velocity.getY()*-1);
                 }
 
@@ -96,6 +100,8 @@ public class Puck extends RoundEntity implements Runnable{
 
                 setX(newX);
                 setY(newY);
+
+
             }
 
             try {

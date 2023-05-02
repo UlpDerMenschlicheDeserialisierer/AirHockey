@@ -110,7 +110,7 @@ public class GameActivity extends AppCompatActivity {
             case MotionEvent.ACTION_DOWN:
                 xDown1 = event.getX();
                 yDown1 = event.getY();
-
+                System.out.println(yDown1);
                 if(xDown1 > playerRadius && xDown1< pitch.getWidth() - playerRadius){
                     if(yDown1 > pitch.getHeight()/2-playerRadius/2 && yDown1< pitch.getHeight()-playerRadius*2){
                         pitch.getPlayer().setX(xDown1);
