@@ -53,9 +53,10 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHol
     @SuppressLint({"ClickableViewAccessibility", "SetTextI18n"})
     @Override
     public void onBindViewHolder(ImageViewHolder holder, int position) {
-        if (position < 8 && holder.getAdapterPosition() < 8 ) {
+        // if (position < 8 && holder.getAdapterPosition() < 8 ) {
             holder.imageView.setImageResource(imageList.get(position));
             skinList = db.getallSkins();
+            int x = skinList.size();
             holder.skinNameTextView.setText(skinList.get(position).getName() + " - " + skinList.get(position).getPrice() + " Coins");
             if (skinList.get(position).getSelected() == 1) {
                 holder.buyButton.setText("SELECTED");
@@ -115,10 +116,7 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHol
                     }
                 });
             }
-            if (position == imageList.size() - 1) {
-                viewPager2.post(runnable);
-            }
-        }
+        //}
     }
 
     @Override
@@ -126,13 +124,6 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHol
         return imageList.size();
     }
 
-    private Runnable runnable = new Runnable() {
-        @Override
-        public void run() {
-            imageList.addAll(imageList);
-            notifyDataSetChanged();
-        }
-    };
 
     public static class ImageViewHolder extends RecyclerView.ViewHolder {
 

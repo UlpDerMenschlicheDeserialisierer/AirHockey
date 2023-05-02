@@ -7,7 +7,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class DataBaseHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "airhockey.db";
-    private static final int DATABASE_VERSION = 3;
+    private static final int DATABASE_VERSION = 6;
 
     public DataBaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -25,8 +25,8 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         insertSkin(db,3, "Green", 20, 0, 0);
         insertSkin(db,4, "Yellow", 30, 0, 0);
         insertSkin(db,5, "Purple", 40, 0, 0);
-        insertSkin(db,6, "Dark", 60, 0, 0);
-        insertSkin(db,7, "Orange", 80, 0, 0);
+        // insertSkin(db,6, "Dark", 60, 0, 0);
+        // insertSkin(db,7, "Orange", 80, 0, 0);
     }
 
     @Override

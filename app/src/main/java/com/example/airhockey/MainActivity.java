@@ -122,8 +122,8 @@ public class MainActivity extends AppCompatActivity {
         imageList.add(R.drawable.skin4);
         imageList.add(R.drawable.skin5);
         imageList.add(R.drawable.skin6);
-        imageList.add(R.drawable.skin7);
-        imageList.add(R.drawable.skin8);
+        // imageList.add(R.drawable.skin7);
+        // imageList.add(R.drawable.skin8);
 
         adapter = new ImageAdapter(imageList, viewPager2, db, this, coinTextView);
 
