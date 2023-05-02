@@ -56,58 +56,62 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHol
         if (position < 8 && holder.getAdapterPosition() < 8 ) {
             holder.imageView.setImageResource(imageList.get(position));
             skinList = db.getallSkins();
-            holder.skinNameTextView.setText(skinList.get(position).getName() + " - " + skinList.get(position).getPrice());
-            // click listener für den Buy-Button
-            holder.buyButton.setOnTouchListener(new View.OnTouchListener() {
-                @Override
-                public boolean onTouch(View view, MotionEvent motionEvent) {
-                    if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
-                        holder.buyButton.startAnimation(scaleUp);
-                        if ((db.getCoins() - skinList.get(holder.getAdapterPosition()).getPrice()) < 0) {
-                            AlertDialog.Builder builder = new AlertDialog.Builder(context);
+            holder.skinNameTextView.setText(skinList.get(position).getName() + " - " + skinList.get(position).getPrice() + " Coins");
+            if (skinList.get(position).getSelected() == 1) {
+                holder.buyButton.setText("SELECTED");
+            } else {
+                // click listener für den Buy-Button
+                holder.buyButton.setOnTouchListener(new View.OnTouchListener() {
+                    @Override
+                    public boolean onTouch(View view, MotionEvent motionEvent) {
+                        if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
+                            holder.buyButton.startAnimation(scaleUp);
+                            if ((db.getCoins() - skinList.get(holder.getAdapterPosition()).getPrice()) < 0) {
+                                AlertDialog.Builder builder = new AlertDialog.Builder(context);
 
-                            // Titel
-                            SpannableString title = new SpannableString("Not enough coins!");
-                            title.setSpan(new RelativeSizeSpan(1.2f), 0, title.length(), 0);
-                            builder.setTitle(title);
+                                // Titel
+                                SpannableString title = new SpannableString("Not enough coins!");
+                                title.setSpan(new RelativeSizeSpan(1.2f), 0, title.length(), 0);
+                                builder.setTitle(title);
 
-                            // Nachricht
-                            SpannableString message = new SpannableString("You don't have enough coins to purchase this skin.\n\n");
-                            message.setSpan(new RelativeSizeSpan(1.1f), 0, message.length(), 0);
-                            builder.setMessage(message);
+                                // Nachricht
+                                SpannableString message = new SpannableString("You don't have enough coins to purchase this skin.\n\n");
+                                message.setSpan(new RelativeSizeSpan(1.1f), 0, message.length(), 0);
+                                builder.setMessage(message);
 
-                            builder.setPositiveButton("OK", null);
+                                builder.setPositiveButton("OK", null);
 
-                            AlertDialog dialog = builder.create();
-                            dialog.setOnShowListener(new DialogInterface.OnShowListener() {
-                                @Override
-                                public void onShow(DialogInterface dialog) {
-                                    Button positiveButton = ((AlertDialog) dialog).getButton(DialogInterface.BUTTON_POSITIVE);
-                                    ViewGroup.LayoutParams params = positiveButton.getLayoutParams();
-                                    params.width = ViewGroup.LayoutParams.MATCH_PARENT;
-                                    positiveButton.setLayoutParams(params);
-                                    positiveButton.setBackgroundResource(R.drawable.button_background);
-                                }
-                            });
+                                AlertDialog dialog = builder.create();
+                                dialog.setOnShowListener(new DialogInterface.OnShowListener() {
+                                    @Override
+                                    public void onShow(DialogInterface dialog) {
+                                        Button positiveButton = ((AlertDialog) dialog).getButton(DialogInterface.BUTTON_POSITIVE);
+                                        ViewGroup.LayoutParams params = positiveButton.getLayoutParams();
+                                        params.width = ViewGroup.LayoutParams.MATCH_PARENT;
+                                        positiveButton.setLayoutParams(params);
+                                        positiveButton.setBackgroundResource(R.drawable.button_background);
+                                    }
+                                });
 
-                            dialog.show();
+                                dialog.show();
 
 
-                            dialog.show();
-                        } else {
-                            // Immer zuerst Skin deselecten, dann neuen Skin selecten
-                            db.deselectOldSkin();
-                            db.purchaseSkin(holder.getAdapterPosition());
-                            // Coins aktualisieren
-                            db.insertCoin(db.getCoins() - skinList.get(holder.getAdapterPosition()).getPrice());
-                            coinTextView.setText("Coins: " + db.getCoins());
+                                dialog.show();
+                            } else {
+                                // Immer zuerst Skin deselecten, dann neuen Skin selecten
+                                db.deselectOldSkin();
+                                db.purchaseSkin(holder.getAdapterPosition());
+                                // Coins aktualisieren
+                                db.insertCoin(db.getCoins() - skinList.get(holder.getAdapterPosition()).getPrice());
+                                coinTextView.setText("Coins: " + db.getCoins());
+                            }
+                        } else if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
+                            holder.buyButton.startAnimation(scaleDown);
                         }
-                    } else if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
-                        holder.buyButton.startAnimation(scaleDown);
+                        return true;
                     }
-                    return true;
-                }
-            });
+                });
+            }
             if (position == imageList.size() - 1) {
                 viewPager2.post(runnable);
             }
