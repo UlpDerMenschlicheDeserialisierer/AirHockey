@@ -3,6 +3,9 @@ package com.example.airhockey;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.text.SpannableString;
+import android.text.style.RelativeSizeSpan;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -14,6 +17,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 import java.util.ArrayList;
@@ -61,10 +65,35 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHol
                         holder.buyButton.startAnimation(scaleUp);
                         if ((db.getCoins() - skinList.get(holder.getAdapterPosition()).getPrice()) < 0) {
                             AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                            builder.setTitle("Not enough coins!");
-                            builder.setMessage("You don't have enough coins to purchase this skin.");
+
+                            // Titel
+                            SpannableString title = new SpannableString("Not enough coins!");
+                            title.setSpan(new RelativeSizeSpan(1.2f), 0, title.length(), 0);
+                            builder.setTitle(title);
+
+                            // Nachricht
+                            SpannableString message = new SpannableString("You don't have enough coins to purchase this skin.\n\n");
+                            message.setSpan(new RelativeSizeSpan(1.1f), 0, message.length(), 0);
+                            builder.setMessage(message);
+
                             builder.setPositiveButton("OK", null);
-                            builder.show();
+
+                            AlertDialog dialog = builder.create();
+                            dialog.setOnShowListener(new DialogInterface.OnShowListener() {
+                                @Override
+                                public void onShow(DialogInterface dialog) {
+                                    Button positiveButton = ((AlertDialog) dialog).getButton(DialogInterface.BUTTON_POSITIVE);
+                                    ViewGroup.LayoutParams params = positiveButton.getLayoutParams();
+                                    params.width = ViewGroup.LayoutParams.MATCH_PARENT;
+                                    positiveButton.setLayoutParams(params);
+                                    positiveButton.setBackgroundResource(R.drawable.button_background);
+                                }
+                            });
+
+                            dialog.show();
+
+
+                            dialog.show();
                         } else {
                             // Immer zuerst Skin deselecten, dann neuen Skin selecten
                             db.deselectOldSkin();
