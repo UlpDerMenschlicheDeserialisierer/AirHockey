@@ -116,7 +116,7 @@ public class MainActivity extends AppCompatActivity {
 
         imageList = new ArrayList<>();
 
-        imageList.add(R.drawable.mitschatten);
+        imageList.add(R.drawable.ohneschatten);
         imageList.add(R.drawable.ohneschatten);
         imageList.add(R.drawable.skin3);
         imageList.add(R.drawable.skin4);

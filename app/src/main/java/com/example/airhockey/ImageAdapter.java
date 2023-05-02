@@ -59,7 +59,10 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHol
             holder.skinNameTextView.setText(skinList.get(position).getName() + " - " + skinList.get(position).getPrice() + " Coins");
             if (skinList.get(position).getSelected() == 1) {
                 holder.buyButton.setText("SELECTED");
+                holder.buyButton.setBackgroundResource(R.drawable.button_selected);
             } else {
+                holder.buyButton.setBackgroundResource(R.drawable.button_background);
+
                 // click listener für den Buy-Button
                 holder.buyButton.setOnTouchListener(new View.OnTouchListener() {
                     @Override
