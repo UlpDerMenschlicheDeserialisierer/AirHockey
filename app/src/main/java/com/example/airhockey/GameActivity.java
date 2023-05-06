@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.MotionEventCompat;
 
 import android.os.Bundle;
+import android.widget.Button;
 
 /**
  * The activity the game runs in
@@ -59,6 +60,9 @@ public class GameActivity extends AppCompatActivity {
 
     String difficulty;
 
+    public Button goal1 = findViewById(R.id.button); //Tor oben
+    public Button goal2 = findViewById(R.id.button2); //Tor unten
+
     /**
      * Prepare for opening game
      *
@@ -70,9 +74,9 @@ public class GameActivity extends AppCompatActivity {
         Intent intent = getIntent();
         difficulty = intent.getStringExtra("DIFFICULTY");
         if (difficulty != null)
-            pitch = new Pitch(this);
+            pitch = new Pitch(this, goal2, goal1);
         else
-            pitch = new Pitch(this);
+            pitch = new Pitch(this, goal2, goal1);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
@@ -110,7 +114,6 @@ public class GameActivity extends AppCompatActivity {
             case MotionEvent.ACTION_DOWN:
                 xDown1 = event.getX();
                 yDown1 = event.getY();
-                System.out.println(yDown1);
                 if(xDown1 > playerRadius && xDown1< pitch.getWidth() - playerRadius){
                     if(yDown1 > pitch.getHeight()/2-playerRadius/2 && yDown1< pitch.getHeight()-playerRadius*2){
                         pitch.getPlayer().setX(xDown1);

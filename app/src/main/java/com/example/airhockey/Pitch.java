@@ -8,6 +8,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.view.View;
+import android.widget.Button;
 
 import androidx.annotation.NonNull;
 
@@ -49,13 +50,14 @@ public class Pitch extends View {
      */
     int pauseTime;
 
-
+    /*
     /**
      * Create a HockeyTable with a difficulty
      *
      * @param context    required for a View
      * @param difficulty The difficulty level
-     */
+
+
     public Pitch(Context context, @NonNull String difficulty) {
         super(context);
         paint = new Paint();
@@ -79,7 +81,7 @@ public class Pitch extends View {
      *
      * @param context required for a View
      */
-    public Pitch(Context context) {
+    public Pitch(Context context, Button goalPlayer, Button goalBot) {
         super(context);
         paint = new Paint();
         int deviceWidth = Resources.getSystem().getDisplayMetrics()
@@ -91,9 +93,9 @@ public class Pitch extends View {
                         getResources(), R.drawable.field)
                 , deviceWidth, deviceHeight, true);
         player = new Player(deviceWidth / 2, 7 * deviceHeight / 8,
-                new Goal(deviceWidth / 4, 0, this), this);
+                new Goal(goalPlayer), this);
 
-        bot = new Bot(deviceWidth / 2, deviceHeight / 8, this);
+        bot = new Bot(deviceWidth / 2, deviceHeight / 8, this, new Goal(goalBot));
 
         p = new Puck(deviceWidth / 2, deviceHeight / 2, this);
     }
@@ -119,7 +121,6 @@ public class Pitch extends View {
         super.onDraw(c);
         c.drawBitmap(bg, 0, 0, null);
         player.draw(c);
-        player.getGoal().draw(c);
         bot.draw(c);
         p.draw(c);
         paint.setTextSize(144);

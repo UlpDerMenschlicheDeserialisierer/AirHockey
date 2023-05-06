@@ -1,53 +1,25 @@
 package com.example.airhockey;
 
-import android.content.res.Resources;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
+import android.widget.Button;
 
-/**
- * A Goal
- *
- * @author David Kaluta
- * @version 21
- * @since 5
- */
-class Goal extends Entity {
-    /**
-     * The goal's score
-     */
-    private int score;
+public class Goal {
+    private float x1, x2, y;
 
-    private static float deviceWidth = Resources.getSystem().getDisplayMetrics().widthPixels;
-
-    /**
-     * Create a new goal
-     *
-     * @param x  the goal's x-coordinate
-     * @param y  The goal's y-coordinate
-     * @param pitch A HockeyTable for resources
-     */
-    Goal(float x, float y, Pitch pitch) {
-        super(x, y, Bitmap.createScaledBitmap(
-                BitmapFactory.decodeResource(pitch.getResources()
-                        , R.drawable.black_pixel),
-                (int) deviceWidth / 2, 10, true));
-        score = 0;
+    public Goal(Button goal){
+        x1 = goal.getX();
+        x2 = x1 + goal.getWidth();
+        y = goal.getY();
     }
 
-    /**
-     * Get the goal's score
-     *
-     * @return the goal's score
-     */
-    int getScore() {
-        return score;
+    public float getX1() {
+        return x1;
     }
 
-    /**
-     * Increase the score by 1
-     */
-    void incScore() {
-        score++;
+    public float getX2() {
+        return x2;
     }
 
+    public float getY() {
+        return y;
+    }
 }
