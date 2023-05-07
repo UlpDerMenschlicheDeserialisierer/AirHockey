@@ -128,7 +128,7 @@ public class MainActivity extends AppCompatActivity {
         adapter = new ImageAdapter(imageList, viewPager2, db, this, coinTextView);
 
         viewPager2.setAdapter(adapter);
-        viewPager2.setOffscreenPageLimit(3);
+        viewPager2.setOffscreenPageLimit(6);
         viewPager2.setClipToPadding(false);
         viewPager2.setClipChildren(false);
         ((RecyclerView)viewPager2.getChildAt(0)).setOverScrollMode(RecyclerView.OVER_SCROLL_NEVER);
@@ -136,25 +136,33 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
+        float downX = 0;
         switch(ev.getAction()) {
             case MotionEvent.ACTION_UP:
                 // User hat sein Finger nach einem Swipe angehoben
                 int current = viewPager2.getCurrentItem();
                 int total = adapter.getItemCount();
-
+                System.out.println("Current: " + current);
+                System.out.println("Total: " + total);
                 if(current == 0 || current == total - 1) {
+                    System.out.println("Erstes oder letztes Item");
+                    float xDiff = ev.getRawX() - downX;
+                    System.out.println(xDiff);
                     // User befindet sich beim ersten, oder letzten Skin, --> nicht nach recht oder links scrollen
                     return super.dispatchTouchEvent(ev);
                 } else {
                     // User befindet sich zwischen zwei Items --> Nach rechts oder Links, je nach Swipe-Richtung wischen
-                    float xDiff = ev.getX() - viewPager2.getX();
-                    if(xDiff > 0) {
+                    float xDiff = ev.getRawX() - downX;
+                    System.out.println(xDiff);
+                    if(xDiff > 500) {
                         viewPager2.setCurrentItem(current - 1);
                     } else {
+                        System.out.println("Hallo: " + (current+1));
                         viewPager2.setCurrentItem(current + 1);
                     }
                 }
-                break;
+            break;
+            case MotionEvent.ACTION_DOWN: downX = ev.getRawX();break;
         }
         return super.dispatchTouchEvent(ev);
     }

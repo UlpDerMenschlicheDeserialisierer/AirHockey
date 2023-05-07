@@ -56,7 +56,6 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHol
         // if (position < 8 && holder.getAdapterPosition() < 8 ) {
             holder.imageView.setImageResource(imageList.get(position));
             skinList = db.getallSkins();
-            int x = skinList.size();
             holder.skinNameTextView.setText(skinList.get(position).getName() + " - " + skinList.get(position).getPrice() + " Coins");
             if (skinList.get(position).getSelected() == 1) {
                 holder.buyButton.setText("SELECTED");
@@ -96,9 +95,6 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHol
                                         positiveButton.setBackgroundResource(R.drawable.button_background);
                                     }
                                 });
-
-                                dialog.show();
-
 
                                 dialog.show();
                             } else {
