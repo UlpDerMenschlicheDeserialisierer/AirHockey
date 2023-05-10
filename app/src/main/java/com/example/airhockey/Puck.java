@@ -68,7 +68,8 @@ public class Puck extends RoundEntity implements Runnable{
                 newX = x+radius;
                 newY = y+ radius;
 
-                if(newY<radius || newY>deviceHeight-radius*2){
+
+                if(newY<radius || newY>deviceHeight-radius){
                     System.out.println("Y Passt");
                     if(x>(deviceWidth/2)-(deviceWidth/6) && newX<(deviceWidth/2)+(deviceWidth/6)) {
                         System.out.println("X Passt");

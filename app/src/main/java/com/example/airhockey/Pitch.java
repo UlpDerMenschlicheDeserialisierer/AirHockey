@@ -7,6 +7,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 
@@ -19,36 +20,15 @@ public class Pitch extends View {
 
     private static float deviceWidth = Resources.getSystem().getDisplayMetrics().widthPixels;
     private static float deviceHeight = Resources.getSystem().getDisplayMetrics().heightPixels;
-    Player player;
+    private Player player;
+    private Bot bot;
+    private Puck p;
+    private Bitmap bg;
+    private Paint paint;
 
+    private Timer timer;
 
-    Bot bot;
-
-    /**
-     * A puck
-     */
-    Puck p;
-
-    /**
-     * The game background
-     */
-    Bitmap bg;
-
-
-    /**
-     * A Paint to draw text with
-     */
-    Paint paint;
-
-    /**
-     * A timer for pausing
-     */
-    Timer timer;
-
-    /**
-     * The time required to pause
-     */
-    int pauseTime;
+    private int pauseTime;
 
     /*
     /**
@@ -81,24 +61,17 @@ public class Pitch extends View {
      *
      * @param context required for a View
      */
-    public Pitch(Context context, Button goalPlayer, Button goalBot) {
+    public Pitch(Context context) {
         super(context);
         paint = new Paint();
-        int deviceWidth = Resources.getSystem().getDisplayMetrics()
-                .widthPixels;
-        int deviceHeight = Resources.getSystem().getDisplayMetrics()
-                .heightPixels;
-        bg = Bitmap.createScaledBitmap(
-                BitmapFactory.decodeResource(
-                        getResources(), R.drawable.field)
-                , deviceWidth, deviceHeight, true);
-        player = new Player(deviceWidth / 2, 7 * deviceHeight / 8,
-                new Goal(goalPlayer), this);
-
-        bot = new Bot(deviceWidth / 2, deviceHeight / 8, this, new Goal(goalBot));
-
+        int deviceWidth = Resources.getSystem().getDisplayMetrics().widthPixels;
+        int deviceHeight = Resources.getSystem().getDisplayMetrics().heightPixels;
+        bg = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.field), deviceWidth, deviceHeight, true);
+        player = new Player(deviceWidth / 2, 7 * deviceHeight / 8, this);
+        bot = new Bot(deviceWidth / 2, deviceHeight / 8, this);
         p = new Puck(deviceWidth / 2, deviceHeight / 2, this);
     }
+
 
     /**
      * Get the red paddle
@@ -125,6 +98,7 @@ public class Pitch extends View {
         p.draw(c);
         paint.setTextSize(144);
         paint.setColor(Color.WHITE);
+
 
         invalidate();
     }

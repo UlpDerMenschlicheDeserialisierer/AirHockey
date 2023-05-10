@@ -7,9 +7,6 @@ import android.graphics.BitmapFactory;
 import java.lang.reflect.Array;
 
 public class Bot extends RoundEntity implements Runnable{
-
-    private Goal goal;
-
     private boolean isWinner;
 
     private Pitch pitch;
@@ -17,14 +14,13 @@ public class Bot extends RoundEntity implements Runnable{
     private static float deviceWidth = Resources.getSystem().getDisplayMetrics().widthPixels;
     public static final float deviceHeight = Resources.getSystem().getDisplayMetrics().heightPixels;
 
-    public Bot(float x, float y, Pitch pitch, Goal goal) {
+    public Bot(float x, float y, Pitch pitch) {
         super(x, y, Bitmap.createScaledBitmap(
                 BitmapFactory.decodeResource(
                         pitch.getResources(), R.drawable.skinred),
                 (int) ((deviceWidth)*128.0*2/1080.0), (int) ((deviceWidth)*128.0*2/1080.0), true));
         this.pitch = pitch;
         this.isWinner = false;
-        this.goal = goal;
 
         velocity = new Vector2D(0,0);
 

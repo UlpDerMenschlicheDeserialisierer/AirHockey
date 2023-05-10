@@ -60,9 +60,6 @@ public class GameActivity extends AppCompatActivity {
 
     String difficulty;
 
-    public Button goal1 = findViewById(R.id.button); //Tor oben
-    public Button goal2 = findViewById(R.id.button2); //Tor unten
-
     /**
      * Prepare for opening game
      *
@@ -73,10 +70,11 @@ public class GameActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         Intent intent = getIntent();
         difficulty = intent.getStringExtra("DIFFICULTY");
+
         if (difficulty != null)
-            pitch = new Pitch(this, goal2, goal1);
+            pitch = new Pitch(this);
         else
-            pitch = new Pitch(this, goal2, goal1);
+            pitch = new Pitch(this);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
