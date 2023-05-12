@@ -7,6 +7,8 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Rect;
+import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -29,6 +31,20 @@ public class Pitch extends View {
     private Timer timer;
 
     private int pauseTime;
+
+    private int scorePlayer = 0;
+
+    public void incrementScorePlayer() {
+        this.scorePlayer +=1;
+    }
+
+    public void incrementScoreBot() {
+        this.scoreBot +=1;
+    }
+
+    private int scoreBot = 0;
+
+    private Canvas c;
 
     /*
     /**
@@ -91,14 +107,26 @@ public class Pitch extends View {
      * @param c required for onDraw
      */
     protected void onDraw(Canvas c) {
+        this.c = c;
         super.onDraw(c);
         c.drawBitmap(bg, 0, 0, null);
+
         player.draw(c);
         bot.draw(c);
         p.draw(c);
+        drawScore();
+        invalidate();
+    }
+
+    public void drawScore(){
+        Paint paint = new Paint();
         paint.setTextSize(144);
         paint.setColor(Color.WHITE);
-
+        c.save();
+        c.rotate(90);
+        String text = scoreBot + " : " + scorePlayer;
+        c.drawText(text,  deviceHeight/2 - deviceWidth/8 , -deviceWidth+deviceWidth/5, paint);
+        c.restore();
 
         invalidate();
     }

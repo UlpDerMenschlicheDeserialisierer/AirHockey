@@ -28,6 +28,9 @@ public class Puck extends RoundEntity implements Runnable{
      * If the game is in goal mode
      */
     private boolean goal;
+
+    private int scorePlayer=0;
+    private int scoreBot=0;
     /**
      * Initialize a new round entity
      *
@@ -65,18 +68,33 @@ public class Puck extends RoundEntity implements Runnable{
                 //System.out.println(y-radius);
 
                 Vector2D direction;
-                newX = x+radius;
-                newY = y+ radius;
+                newX = x + radius;
+                newY = y + radius;
 
+                //pitch.drawScore((int) newX, (int) newY);
 
-                if(newY<radius || newY>deviceHeight-radius){
+                //GOAL Bot
+                if (newY < radius) {
                     System.out.println("Y Passt");
-                    if(x>(deviceWidth/2)-(deviceWidth/6) && newX<(deviceWidth/2)+(deviceWidth/6)) {
+                    if (x > (deviceWidth / 2) - (deviceWidth / 6) && newX < (deviceWidth / 2) + (deviceWidth / 6)) {
                         System.out.println("X Passt");
+                        scoreBot+=1;
                         goal = true;
+                        pitch.incrementScoreBot();
                         break;
                     }
                 }
+                //GOAL Player
+                else if (newY > deviceHeight - radius) {
+                    if (x > (deviceWidth / 2) - (deviceWidth / 6) && newX < (deviceWidth / 2) + (deviceWidth / 6)) {
+                        System.out.println("X Passt");
+                        scorePlayer+=1;
+                        goal = true;
+                        pitch.incrementScorePlayer();
+                        break;
+                    }
+                }
+
 
                 if ((direction= checkCircleCollisionWithDirection(p1))!=null) {
                     setVelocity(new Vector2D(2,2));
