@@ -7,16 +7,14 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.Rect;
 import android.graphics.Typeface;
-import android.view.LayoutInflater;
+import android.os.Handler;
 import android.view.View;
-import android.widget.Button;
 
-import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
+import androidx.core.content.res.ResourcesCompat;
 
 import java.util.Timer;
-import java.util.TimerTask;
 
 public class Pitch extends View {
 
@@ -28,18 +26,18 @@ public class Pitch extends View {
     private Bitmap bg;
     private Paint paint;
 
-    private Timer timer;
-
-    private int pauseTime;
+    private boolean rotating;
+    private boolean moving;
+    private float textRotation;
 
     private int scorePlayer = 0;
 
-    public void incrementScorePlayer() {
-        this.scorePlayer +=1;
+    public void setScorePlayer(int scorePlayer) {
+        this.scorePlayer = scorePlayer;
     }
 
-    public void incrementScoreBot() {
-        this.scoreBot +=1;
+    public void setScoreBot(int scoreBot) {
+        this.scoreBot = scoreBot;
     }
 
     private int scoreBot = 0;
@@ -118,16 +116,45 @@ public class Pitch extends View {
         invalidate();
     }
 
-    public void drawScore(){
+    public void drawScore() {
         Paint paint = new Paint();
         paint.setTextSize(144);
         paint.setColor(Color.WHITE);
+        Typeface typeface = ResourcesCompat.getFont(getContext(), R.font.montserrat);
+        paint.setTypeface(typeface);
+        paint.setShadowLayer(30f, 10f, 10f, Color.parseColor("#00DDFF"));
+
         c.save();
         c.rotate(90);
         String text = scoreBot + " : " + scorePlayer;
-        c.drawText(text,  deviceHeight/2 - deviceWidth/8 , -deviceWidth+deviceWidth/5, paint);
+        c.drawText(text, deviceHeight / 2 - deviceHeight / 14, -deviceWidth + deviceWidth / 6, paint);
         c.restore();
 
+        invalidate();
+    }
+
+    public void goalAnimation(){
+        Paint paint = new Paint();
+        paint.setTextSize(200);
+        paint.setColor(Color.WHITE);
+        Typeface typeface = ResourcesCompat.getFont(getContext(), R.font.montserrat);
+        paint.setTypeface(typeface);
+        paint.setShadowLayer(30f, 10f, 10f, Color.parseColor("#00DDFF"));
+
+        c.drawText("GOAL",  deviceWidth/2-deviceWidth/4, deviceHeight/2+deviceHeight/28, paint);
+
+
+
+        // Invalidate the view to force a redraw
+        invalidate();
+
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+
+        c.drawText("GOAL",  deviceWidth*7, deviceHeight*7, paint);
         invalidate();
     }
 }

@@ -73,24 +73,24 @@ public class Puck extends RoundEntity implements Runnable{
 
                 //pitch.drawScore((int) newX, (int) newY);
 
-                //GOAL Bot
+                //GOAL Player
                 if (newY < radius) {
                     System.out.println("Y Passt");
                     if (x > (deviceWidth / 2) - (deviceWidth / 6) && newX < (deviceWidth / 2) + (deviceWidth / 6)) {
                         System.out.println("X Passt");
-                        scoreBot+=1;
+                        scorePlayer+=1;
                         goal = true;
-                        pitch.incrementScoreBot();
+                        pitch.setScorePlayer(scorePlayer);
                         break;
                     }
                 }
-                //GOAL Player
+                //GOAL Bot
                 else if (newY > deviceHeight - radius) {
                     if (x > (deviceWidth / 2) - (deviceWidth / 6) && newX < (deviceWidth / 2) + (deviceWidth / 6)) {
                         System.out.println("X Passt");
-                        scorePlayer+=1;
+                        scoreBot+=1;
                         goal = true;
-                        pitch.incrementScorePlayer();
+                        pitch.setScoreBot(scoreBot);
                         break;
                     }
                 }
