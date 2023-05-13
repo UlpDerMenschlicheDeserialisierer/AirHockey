@@ -80,6 +80,7 @@ public class Puck extends RoundEntity implements Runnable{
                         System.out.println("X Passt");
                         scorePlayer+=1;
                         goal = true;
+                        pitch.setStartGoalAnimation(true);
                         pitch.setScorePlayer(scorePlayer);
                         break;
                     }
@@ -90,6 +91,7 @@ public class Puck extends RoundEntity implements Runnable{
                         System.out.println("X Passt");
                         scoreBot+=1;
                         goal = true;
+                        pitch.setStartGoalAnimation(true);
                         pitch.setScoreBot(scoreBot);
                         break;
                     }

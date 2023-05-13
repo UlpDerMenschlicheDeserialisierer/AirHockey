@@ -353,7 +353,9 @@ public class MainActivity extends AppCompatActivity {
             public void run() {
                 try {
                     Socket socket = new Socket(serviceInfo.getHost(), serviceInfo.getPort());
-                    // Connection established, do something with the socket
+                    // Connection established
+                    // Hier könnte man nun mit dem Socket Daten austauschen
+                    // System.out.println("Verbindung hergestellt");
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -369,6 +371,7 @@ public class MainActivity extends AppCompatActivity {
             public void run() {
                 if (!mIsServer) {
                     registerService();
+                    System.out.println("SERVER GESTARTET");
                 }
             }
         }, 5000); // Verzögerung von 5 Sekunden

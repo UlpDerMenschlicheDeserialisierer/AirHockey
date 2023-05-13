@@ -25,24 +25,10 @@ public class Pitch extends View {
     private Puck p;
     private Bitmap bg;
     private Paint paint;
-
-    private boolean rotating;
-    private boolean moving;
-    private float textRotation;
-
     private int scorePlayer = 0;
-
-    public void setScorePlayer(int scorePlayer) {
-        this.scorePlayer = scorePlayer;
-    }
-
-    public void setScoreBot(int scoreBot) {
-        this.scoreBot = scoreBot;
-    }
-
     private int scoreBot = 0;
-
     private Canvas c;
+    private boolean startGoalAnimation = false;
 
     /*
     /**
@@ -113,6 +99,8 @@ public class Pitch extends View {
         bot.draw(c);
         p.draw(c);
         drawScore();
+        //goalAnimation();
+
         invalidate();
     }
 
@@ -129,32 +117,47 @@ public class Pitch extends View {
         String text = scoreBot + " : " + scorePlayer;
         c.drawText(text, deviceHeight / 2 - deviceHeight / 14, -deviceWidth + deviceWidth / 6, paint);
         c.restore();
+        if (startGoalAnimation) {
+            paint.setTextSize(200);
+            c.drawText("GOAL", deviceWidth / 2 - deviceWidth / 4, deviceHeight / 2 + deviceHeight / 28, paint);
+            invalidate();
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    c.drawText("GOAL", deviceWidth + 10, deviceHeight + 10, paint);
+                    startGoalAnimation = false;
+                }
+            }, 2000); // Delay for 1 second (1000 milliseconds)
+            //startGoalAnimation = false;
+        }
 
         invalidate();
     }
 
     public void goalAnimation(){
-        Paint paint = new Paint();
-        paint.setTextSize(200);
-        paint.setColor(Color.WHITE);
-        Typeface typeface = ResourcesCompat.getFont(getContext(), R.font.montserrat);
-        paint.setTypeface(typeface);
-        paint.setShadowLayer(30f, 10f, 10f, Color.parseColor("#00DDFF"));
+        if (startGoalAnimation) {
+            Paint paint = new Paint();
+            paint.setTextSize(200);
+            paint.setColor(Color.WHITE);
+            Typeface typeface = ResourcesCompat.getFont(getContext(), R.font.montserrat);
+            paint.setTypeface(typeface);
+            paint.setShadowLayer(30f, 10f, 10f, Color.parseColor("#00DDFF"));
 
-        c.drawText("GOAL",  deviceWidth/2-deviceWidth/4, deviceHeight/2+deviceHeight/28, paint);
-
-
-
-        // Invalidate the view to force a redraw
-        invalidate();
-
-        try {
-            Thread.sleep(2000);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
+            c.drawText("GOAL", deviceWidth / 2 - deviceWidth / 4, deviceHeight / 2 + deviceHeight / 28, paint);
+            // Invalidate the view to force a redraw
+            invalidate();
+            startGoalAnimation = false;
         }
+    }
 
-        c.drawText("GOAL",  deviceWidth*7, deviceHeight*7, paint);
-        invalidate();
+    public void setScorePlayer(int scorePlayer) {
+        this.scorePlayer = scorePlayer;
+    }
+
+    public void setScoreBot(int scoreBot) {
+        this.scoreBot = scoreBot;
+    }
+    public void setStartGoalAnimation(boolean startGoalAnimation) {
+        this.startGoalAnimation = startGoalAnimation;
     }
 }
