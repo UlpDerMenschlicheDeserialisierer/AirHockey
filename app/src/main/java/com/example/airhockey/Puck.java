@@ -3,7 +3,6 @@ package com.example.airhockey;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.view.MotionEvent;
 
 public class Puck extends RoundEntity implements Runnable{
 
@@ -31,6 +30,8 @@ public class Puck extends RoundEntity implements Runnable{
 
     private int scorePlayer=0;
     private int scoreBot=0;
+
+    private Bot bot;
     /**
      * Initialize a new round entity
      *
@@ -50,8 +51,11 @@ public class Puck extends RoundEntity implements Runnable{
         this.pitch = pitch;
         newX = 0;
         newY = 0;
+        bot = new Bot(deviceWidth / 2, deviceHeight / 8, pitch, this);
         thread.start();
     }
+
+    public Bot getBot(){return this.bot;}
 
     public Vector2D getVelocity(){return velocity;}
 
@@ -61,7 +65,6 @@ public class Puck extends RoundEntity implements Runnable{
 
     public void run() {
         Player p1 = pitch.getPlayer();
-        Bot bot = pitch.getBot();
         while (!p1.isWinner() && !bot.isWinner()) {
             //System.out.println("Puck X: " + centerPointX);
             //System.out.println("Puck Y: " + centerPointY);

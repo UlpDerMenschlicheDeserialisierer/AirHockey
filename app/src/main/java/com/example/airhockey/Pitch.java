@@ -69,8 +69,9 @@ public class Pitch extends View {
         int deviceHeight = Resources.getSystem().getDisplayMetrics().heightPixels;
         bg = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.field), deviceWidth, deviceHeight, true);
         player = new Player(deviceWidth / 2, 7 * deviceHeight / 8, this);
-        bot = new Bot(deviceWidth / 2, deviceHeight / 8, this);
         p = new Puck(deviceWidth / 2, deviceHeight / 2, this);
+        bot = p.getBot();
+
     }
 
 
