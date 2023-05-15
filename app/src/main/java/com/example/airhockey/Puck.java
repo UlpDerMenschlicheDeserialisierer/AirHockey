@@ -57,12 +57,26 @@ public class Puck extends RoundEntity implements Runnable{
 
     public void setVelocity(Vector2D velocity){this.velocity = velocity;}
 
+    public void setGoal(boolean goal){this.goal=goal;}
+
     public void run() {
         Player p1 = pitch.getPlayer();
         Bot bot = pitch.getBot();
         while (!p1.isWinner() && !bot.isWinner()) {
             //System.out.println("Puck X: " + centerPointX);
             //System.out.println("Puck Y: " + centerPointY);
+
+            if(scorePlayer==5){
+                p1.win();
+                break;
+            }
+            if(scoreBot==5){
+                bot.win();
+                break;
+            }
+
+
+
             if (!goal) {
                 //Tor überprüfung
                 //System.out.println(y-radius);
@@ -81,8 +95,9 @@ public class Puck extends RoundEntity implements Runnable{
                         scorePlayer+=1;
                         goal = true;
                         pitch.setStartGoalAnimation(true);
+                        pitch.setGoalPlayer(true);
                         pitch.setScorePlayer(scorePlayer);
-                        break;
+                        continue;
                     }
                 }
                 //GOAL Bot
@@ -92,8 +107,9 @@ public class Puck extends RoundEntity implements Runnable{
                         scoreBot+=1;
                         goal = true;
                         pitch.setStartGoalAnimation(true);
+                        pitch.setGoalPlayer(false);
                         pitch.setScoreBot(scoreBot);
-                        break;
+                        continue;
                     }
                 }
 

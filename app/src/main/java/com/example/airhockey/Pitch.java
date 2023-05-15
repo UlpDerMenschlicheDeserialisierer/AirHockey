@@ -29,6 +29,7 @@ public class Pitch extends View {
     private int scoreBot = 0;
     private Canvas c;
     private boolean startGoalAnimation = false;
+    private boolean goalPlayer = false;
 
     /*
     /**
@@ -128,6 +129,16 @@ public class Pitch extends View {
                     startGoalAnimation = false;
                 }
             }, 2000); // Delay for 1 second (1000 milliseconds)
+
+            if(!goalPlayer){
+                p.setX(deviceWidth/2);
+                p.setY(2*deviceHeight/3);
+            }else{
+                p.setX(deviceWidth/2);
+                p.setY(deviceHeight/3);
+            }
+            p.setVelocity(new Vector2D(0,0));
+            p.setGoal(false);
             //startGoalAnimation = false;
         }
 
@@ -159,5 +170,9 @@ public class Pitch extends View {
     }
     public void setStartGoalAnimation(boolean startGoalAnimation) {
         this.startGoalAnimation = startGoalAnimation;
+    }
+
+    public void setGoalPlayer(boolean goalPlayer) {
+        this.goalPlayer = goalPlayer;
     }
 }

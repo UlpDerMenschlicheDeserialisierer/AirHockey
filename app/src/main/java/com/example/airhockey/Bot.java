@@ -73,4 +73,8 @@ public class Bot extends RoundEntity implements Runnable{
 
 
     public boolean isWinner() {return isWinner;}
+
+    public void win() {
+        isWinner = true;
+    }
 }
