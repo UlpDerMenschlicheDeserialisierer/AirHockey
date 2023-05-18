@@ -38,7 +38,6 @@ public class FingerTracker {
     }
 
     public Vector2D getFingerVelocity() {
-        //System.out.println("X: " + fingerVelocity.getMagnitude());
         return fingerVelocity;
     }
 

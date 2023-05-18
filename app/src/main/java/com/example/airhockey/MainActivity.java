@@ -15,6 +15,7 @@ import androidx.viewpager2.widget.MarginPageTransformer;
 import androidx.viewpager2.widget.ViewPager2;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -52,17 +53,19 @@ public class MainActivity extends AppCompatActivity {
     private boolean mIsConnected = false;
     private boolean mSearchInProgress = false;
     private NsdManager.RegistrationListener mRegistrationListener;
+    private static final int REQUEST_CODE_OTHER_ACTIVITY = 1;
+
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // Datenbankinstanz erstellen
-        db = new Database(this);
         setContentView(R.layout.activity_main);
+        db = new Database(this);
+        db.insertCoin(5);
         // Coin Text View
         coinTextView = findViewById(R.id.textViewCoins);
-        coinTextView.setText(coinTextView.getText() + " " + db.getCoins());
+        updateCoinTextView();
         // Skins in Slider laden
         init();
         setUpTransformer();
@@ -238,9 +241,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void goToGame(View view) {
-        Intent intent = new Intent(this, GameActivity.class);
-        intent.putExtra("DIFFICULTY", "EASY");
-        startActivity(intent);
+        Intent intent = new Intent(MainActivity.this, GameActivity.class);
+        startActivityForResult(intent, REQUEST_CODE_OTHER_ACTIVITY);
     }
 
     private void setUpTransformer() {
@@ -283,18 +285,13 @@ public class MainActivity extends AppCompatActivity {
                 // User hat sein Finger nach einem Swipe angehoben
                 int current = viewPager2.getCurrentItem();
                 int total = adapter.getItemCount();
-                System.out.println("Current: " + current);
-                System.out.println("Total: " + total);
                 if(current == 0 || current == total - 1) {
-                    System.out.println("Erstes oder letztes Item");
                     float xDiff = ev.getRawX() - downX;
-                    System.out.println(xDiff);
                     // User befindet sich beim ersten, oder letzten Skin, --> nicht nach recht oder links scrollen
                     return super.dispatchTouchEvent(ev);
                 } else {
                     // User befindet sich zwischen zwei Items --> Nach rechts oder Links, je nach Swipe-Richtung wischen
                     float xDiff = ev.getRawX() - downX;
-                    System.out.println(xDiff);
                     if(xDiff > 500) {
                         viewPager2.setCurrentItem(current - 1);
                     } else {
@@ -385,6 +382,26 @@ public class MainActivity extends AppCompatActivity {
 
         mNsdManager.registerService(serviceInfo, NsdManager.PROTOCOL_DNS_SD, mRegistrationListener);
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == REQUEST_CODE_OTHER_ACTIVITY) {
+            // Die andere Aktivität wurde beendet
+            if (resultCode == RESULT_OK) {
+                db.insertCoin(5);
+                updateCoinTextView();
+            }
+        }
+    }
+
+    private void updateCoinTextView() {
+        int coins = db.getCoins();
+        coinTextView.setText("Coins: " + coins);
+    }
+
+
     @Override
     protected void onDestroy() {
         super.onDestroy();

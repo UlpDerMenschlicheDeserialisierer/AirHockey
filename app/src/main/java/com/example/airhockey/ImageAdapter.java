@@ -102,8 +102,22 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHol
                                 db.deselectOldSkin();
                                 db.purchaseSkin(holder.getAdapterPosition());
                                 // Coins aktualisieren
-                                db.insertCoin(db.getCoins() - skinList.get(holder.getAdapterPosition()).getPrice());
+                                db.insertCoin(skinList.get(holder.getAdapterPosition()).getPrice() - db.getCoins());
                                 coinTextView.setText("Coins: " + db.getCoins());
+
+                                for (int i = 0; i < skinList.size(); i++) {
+                                    Skin skin = skinList.get(i);
+                                    if (skin.getSelected() == 1) {
+                                        // Skin ist ausgewählt
+                                        holder.buyButton.setText("SELECTED");
+                                        holder.buyButton.setBackgroundResource(R.drawable.button_selected);
+                                    } else {
+                                        // Skin ist nicht ausgewählt
+                                        //holder.buyButton.setText("BUY");
+                                        holder.buyButton.setBackgroundResource(R.drawable.button_background);
+                                    }
+                                }
+
                             }
                         } else if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
                             holder.buyButton.startAnimation(scaleDown);

@@ -5,6 +5,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.os.Parcelable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,9 +24,13 @@ public class Database {
     }
 
     public void insertCoin(int amount) {
+        int currentAmount = getCoins();
+        int newAmount = currentAmount + amount;
+
         ContentValues values = new ContentValues();
-        values.put("amount", amount);
-        db.insert("coins", null, values);
+        values.put("amount", newAmount);
+
+        db.update("coins", values, null, null);
     }
 
     @SuppressLint("Range")
@@ -88,5 +93,4 @@ public class Database {
         values.put("selected", 0);
         db.update("skins", values, "selected=?", new String[]{String.valueOf(oldSelectedIndex)});
     }
-
 }

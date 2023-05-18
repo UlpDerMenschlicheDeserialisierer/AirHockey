@@ -24,14 +24,12 @@ public class GameActivity extends AppCompatActivity {
     /**
      * The width of the device
      */
-    public static final float deviceWidth = Resources.getSystem()
-            .getDisplayMetrics().widthPixels;
+    public static final float deviceWidth = Resources.getSystem().getDisplayMetrics().widthPixels;
 
     /**
      * The height of the device
      */
-    public static final float deviceHeight = Resources.getSystem()
-            .getDisplayMetrics().heightPixels;
+    public static final float deviceHeight = Resources.getSystem().getDisplayMetrics().heightPixels;
 
     /**
      * A HockeyTable for the game
@@ -58,8 +56,6 @@ public class GameActivity extends AppCompatActivity {
      */
     float yDown2;
 
-    String difficulty;
-
     /**
      * Prepare for opening game
      *
@@ -69,12 +65,8 @@ public class GameActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Intent intent = getIntent();
-        difficulty = intent.getStringExtra("DIFFICULTY");
 
-        if (difficulty != null)
-            pitch = new Pitch(this);
-        else
-            pitch = new Pitch(this);
+        pitch = new Pitch(this);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);

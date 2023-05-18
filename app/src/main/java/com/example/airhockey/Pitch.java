@@ -31,37 +31,6 @@ public class Pitch extends View {
     private boolean startGoalAnimation = false;
     private boolean goalPlayer = false;
 
-    /*
-    /**
-     * Create a HockeyTable with a difficulty
-     *
-     * @param context    required for a View
-     * @param difficulty The difficulty level
-
-
-    public Pitch(Context context, @NonNull String difficulty) {
-        super(context);
-        paint = new Paint();
-        int deviceWidth = Resources.getSystem().getDisplayMetrics().widthPixels;
-        int deviceHeight = Resources.getSystem().getDisplayMetrics().heightPixels;
-        pauseTime = -4;
-        bg = Bitmap.createScaledBitmap(
-                BitmapFactory.decodeResource(
-                        getResources(), R.drawable.field)
-                , deviceWidth, deviceHeight, true);
-        player = new Player(deviceWidth / 2, 7 * deviceHeight / 8,
-                new Goal(deviceWidth / 4, 0, this), this);
-
-        bot = new Bot(deviceWidth / 2, deviceHeight / 8, this);
-
-        p = new Puck(deviceWidth / 2, deviceHeight / 2, this);
-    }
-
-    /**
-     * Create a HockeyTable without a difficulty (will be Medium)
-     *
-     * @param context required for a View
-     */
     public Pitch(Context context) {
         super(context);
         paint = new Paint();
@@ -69,9 +38,8 @@ public class Pitch extends View {
         int deviceHeight = Resources.getSystem().getDisplayMetrics().heightPixels;
         bg = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.field), deviceWidth, deviceHeight, true);
         player = new Player(deviceWidth / 2, 7 * deviceHeight / 8, this);
-        p = new Puck(deviceWidth / 2, deviceHeight / 2, this);
+        p = new Puck(deviceWidth / 2, deviceHeight / 2, this, getContext());
         bot = p.getBot();
-
     }
 
 

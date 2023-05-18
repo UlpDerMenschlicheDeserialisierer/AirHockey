@@ -7,7 +7,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class DataBaseHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "airhockey.db";
-    private static final int DATABASE_VERSION = 8;
+    private static final int DATABASE_VERSION = 10;
 
     public DataBaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -25,18 +25,19 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         insertSkin(db,3, "Green", 20, 0, 0);
         insertSkin(db,4, "Yellow", 30, 0, 0);
         insertSkin(db,5, "Purple", 40, 0, 0);
-        // insertSkin(db,6, "Dark", 60, 0, 0);
-        // insertSkin(db,7, "Orange", 80, 0, 0);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL("DROP TABLE IF EXISTS coins");
-        db.execSQL("DROP TABLE IF EXISTS skins");
-        onCreate(db);
+        // Lasse die Implementierung leer, da wir die Standardimplementierung nicht benötigen
     }
 
-    private void insertSkin(SQLiteDatabase db, int id, String name, int price,int purchased, int selected) {
+    @Override
+    public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        // Lasse die Implementierung leer, da wir die Standardimplementierung nicht benötigen
+    }
+
+    private void insertSkin(SQLiteDatabase db, int id, String name, int price, int purchased, int selected) {
         ContentValues contentValues = new ContentValues();
         contentValues.put("id", id);
         contentValues.put("name", name);
@@ -46,4 +47,3 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         db.insert("skins", null, contentValues);
     }
 }
-
