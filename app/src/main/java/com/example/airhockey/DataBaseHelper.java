@@ -7,7 +7,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class DataBaseHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "airhockey.db";
-    private static final int DATABASE_VERSION = 10;
+    private static final int DATABASE_VERSION = 15;
 
     public DataBaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -17,14 +17,16 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         db.execSQL("CREATE TABLE IF NOT EXISTS coins (amount INTEGER DEFAULT 0)");
         db.execSQL("CREATE TABLE IF NOT EXISTS skins (id INTEGER PRIMARY KEY, name TEXT, price INTEGER, purchased INTEGER, selected INTEGER)");
-
+        ContentValues values = new ContentValues();
+        values.put("amount", 0);
+        db.insert("coins", null, values);
         // Standard-Skins hinzufügen
         insertSkin(db,0, "BlueFire", 0,1, 1); // 1 = purchased, 0 = not purchased, 1 = selected, 0 = not selected
-        insertSkin(db,1,"Red", 10, 0, 0);
-        insertSkin(db,2, "Blue", 10,0, 0 );
-        insertSkin(db,3, "Green", 20, 0, 0);
-        insertSkin(db,4, "Yellow", 30, 0, 0);
-        insertSkin(db,5, "Purple", 40, 0, 0);
+        insertSkin(db,1,"Red", 10000, 0, 0);
+        insertSkin(db,2, "Skin3", 3000,0, 0 );
+        insertSkin(db,3, "Skin4", 4000, 0, 0);
+        insertSkin(db,4, "Skin5", 3080, 0, 0);
+        insertSkin(db,5, "Skin6", 4090, 0, 0);
     }
 
     @Override

@@ -60,9 +60,10 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //this.deleteDatabase("airhockey.db");
+
         setContentView(R.layout.activity_main);
         db = new Database(this);
-        db.insertCoin(5);
         // Coin Text View
         coinTextView = findViewById(R.id.textViewCoins);
         updateCoinTextView();
@@ -262,7 +263,7 @@ public class MainActivity extends AppCompatActivity {
         imageList = new ArrayList<>();
 
         imageList.add(R.drawable.ohneschatten);
-        imageList.add(R.drawable.ohneschatten);
+        imageList.add(R.drawable.skinred);
         imageList.add(R.drawable.skin3);
         imageList.add(R.drawable.skin4);
         imageList.add(R.drawable.skin5);

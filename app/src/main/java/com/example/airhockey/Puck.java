@@ -62,7 +62,7 @@ public class Puck extends RoundEntity implements Runnable{
         Player p1 = pitch.getPlayer();
         Looper.prepare();
         while (!p1.isWinner() && !bot.isWinner()) {
-            if(scorePlayer==1){
+            if(scorePlayer==5){
                 p1.win();
                 showDialog("Player");
                 break;
