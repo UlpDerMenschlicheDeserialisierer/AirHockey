@@ -111,13 +111,15 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHol
                                         // Skin ist ausgewählt
                                         holder.buyButton.setText("SELECTED");
                                         holder.buyButton.setBackgroundResource(R.drawable.button_selected);
+                                    } else if (skin.getPurchased() == 1) {
+                                        holder.buyButton.setText("SELECT");
+                                        holder.buyButton.setBackgroundResource(R.drawable.button_background);
                                     } else {
                                         // Skin ist nicht ausgewählt
-                                        //holder.buyButton.setText("BUY");
+                                        holder.buyButton.setText("BUY");
                                         holder.buyButton.setBackgroundResource(R.drawable.button_background);
                                     }
                                 }
-
                             }
                         } else if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
                             holder.buyButton.startAnimation(scaleDown);
